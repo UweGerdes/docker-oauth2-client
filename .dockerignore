@@ -1,0 +1,6 @@
+# dockerignore
+.git/
+docs/jsdoc
+public/css/
+public/js/
+

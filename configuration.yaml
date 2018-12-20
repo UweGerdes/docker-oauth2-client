@@ -1,0 +1,114 @@
+#
+#  Configuration for boilerplate
+#
+gulp:
+  start:
+    development:
+      gulp:
+        - 'lint'
+        - 'build'
+        - 'watch'
+        - 'livereload-start'
+        - 'server-start'
+#        - 'tests'
+      build:
+        - 'less'
+        - 'js'
+#        - 'jsdoc'
+      tests:
+        - 'test-modules'
+      lint:
+        - 'jshint'
+        - 'jsonlint'
+        - 'lesshint'
+        - 'yamllint'
+        - 'puglint'
+        - 'ejslint'
+      server:
+        - 'server-changed'
+#        - 'tests'
+    production:
+      gulp:
+        - 'build'
+        - 'server-start'
+      build:
+        - 'less'
+        - 'js'
+      tests: []
+      lint: []
+      server:
+        - 'server-changed'
+  watch:
+    js:
+      - 'modules/*/js/*.js'
+    jsdoc:
+      - 'nofile.js'
+    jshint:
+      - '*.js'
+      - 'gulp/**/*.js'
+      - 'lib/**/*.js'
+      - 'modules/**/*.js'
+      - '!modules/**/tests/e2e-workflow/*.js'
+    jsonlint:
+      - '**/*.json'
+      - '.jscsrc'
+      - '.jshintrc'
+      - '.lesshintrc'
+    lesshint:
+      - 'modules/**/less/**/*.less'
+      - 'src/less/**/*.less'
+    yamllint:
+      - '**/*.yaml'
+      - '**/*.yml'
+    ejslint:
+      - '**/*.ejs'
+    less:
+      - 'src/less/**/*.less'
+      - 'modules/**/*.less'
+    puglint:
+      - '**/*.pug'
+    server-changed:
+      - './server.js'
+      - './modules/**/!(tests)/server/*.js'
+    livereload:
+      - 'public/**/*.html'
+      - 'modules/**/*.ejs'
+      - 'modules/**/*.pug'
+      - 'public/img/**/*.*'
+      - 'public/css/*.css'
+      - 'public/js/**/*.js'
+    test-modules:
+      - 'modules/**/tests/model/*.*'
+      - 'modules/**/tests/server/*.*'
+      - 'modules/**/views/**/*.*'
+      - 'htdocs/css/*.css'
+      - 'htdocs/js/**/*.js'
+  tests:
+    modules:
+      - 'modules/**/tests/model/*.js'
+      - 'modules/**/tests/server/*.js'
+  build:
+    jsdoc:
+      src:
+        - '*.js'
+        - 'gulp/**/*.js'
+        - 'lib/**/*.js'
+        - 'modules/**/*.js'
+        - 'src/**/*.js'
+      dest: 'docs/jsdoc'
+    js:
+      src: 'modules/*/js/*.js'
+      dest: 'public/js'
+      replace:
+        '/js': ''
+    less:
+      src: 'src/less/app.less'
+      dest: 'public/css'
+
+server:
+  server: ./server.js
+  docroot: ./public
+  modules: ./modules
+  httpPort: 8080
+  livereloadPort: 8081
+  verbose: false

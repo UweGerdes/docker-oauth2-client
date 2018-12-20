@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="de">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>500 - server error</title>
+		<meta name="viewport" content="width=device-width">
+		<meta name="author" content="Uwe Gerdes, entwicklung@uwegerdes.de">
+		<meta name="description" content="500 - server error">
+		<link rel="stylesheet" href="/css/app.css" />
+	</head>
+	<body>
+		<div class="page">
+			<h1>500 - server error</h1>
+			<pre><%= error %></pre>
+		</div>
+		<div id="footer">
+			<p class="copyright" id="copyright">
+				&copy; 2018 <a href="mailto:entwicklung@uwegerdes.de">Uwe Gerdes</a>
+			</p>
+		</div>
+		<% if (hostname && livereloadPort) { %>
+			<script src="http://<%= hostname %>:<%= livereloadPort %>/livereload.js" language="JavaScript"></script>
+		<% } %>
+	</body>
+</html>
