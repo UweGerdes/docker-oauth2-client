@@ -1,7 +1,7 @@
 {
   "name": "expressjs-boilerplate",
   "description": "boilerplate for nodejs docker with expressjs with pug and ejs for html frontend",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "keywords": [
     "boilerplate",
     "docker",
@@ -31,6 +31,8 @@
     "pug": "^2.0.3"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-http": "^4.0.0",
     "glob": "^7.1.3",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^6.0.0",
@@ -46,12 +48,13 @@
     "gulp-livereload": "^4.0.0",
     "gulp-mocha": "^6.0.0",
     "gulp-notify": "^3.2.0",
-    "gulp-pug-linter": "^0.6.0",
+    "gulp-pug-linter": "^1.1.0",
     "gulp-rename": "^1.4.0",
     "gulp-sequence": "^1.0.0",
     "gulp-yaml-validate": "^1.0.2",
+    "jsdom": "^13.0.0",
     "jshint": "^2.9.6",
-    "less-plugin-glob": "^2.0.2",
+    "less-plugin-glob": "^3.0.0",
     "stream-combiner2": "^1.1.1"
   },
   "repository": {

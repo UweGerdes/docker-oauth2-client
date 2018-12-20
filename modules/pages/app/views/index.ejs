@@ -11,7 +11,7 @@
 	</head>
 	<body>
 		<div class="page">
-			<h1>Module:</h1>
+			<h1 id="headline" class="headline">Module:</h1>
 			<% for (var [module, data] of Object.entries(modules)) { %>
 				<h2><a href="<%= module %>/"><%= data.name %></a></h2>
 			<% } %>

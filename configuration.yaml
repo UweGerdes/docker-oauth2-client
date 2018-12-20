@@ -10,7 +10,7 @@ gulp:
         - 'watch'
         - 'livereload-start'
         - 'server-start'
-#        - 'tests'
+        - 'tests'
       build:
         - 'less'
         - 'js'
@@ -26,7 +26,7 @@ gulp:
         - 'ejslint'
       server:
         - 'server-changed'
-#        - 'tests'
+        - 'tests'
     production:
       gulp:
         - 'build'
@@ -87,6 +87,7 @@ gulp:
     modules:
       - 'modules/**/tests/model/*.js'
       - 'modules/**/tests/server/*.js'
+      - 'modules/**/tests/views/*.js'
   build:
     jsdoc:
       src:
