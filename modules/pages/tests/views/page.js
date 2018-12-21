@@ -15,7 +15,7 @@ const chai = require('chai'),
 
 chai.use(chaiHttp);
 
-describe('app page', function () {
+describe('/pages/tests/views/page.js', function () {
   describe('GET /app/', function () {
     it('should have head', function (done) {
       chai.request('http://localhost:8080')

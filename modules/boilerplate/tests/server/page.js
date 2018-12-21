@@ -15,9 +15,9 @@ const chai = require('chai'),
 
 chai.use(chaiHttp);
 
-describe('app page', function () {
+describe('/boilerplate/tests/server/page.js', function () {
   describe('GET /boilerplate/', function () {
-    it('should have head', function (done) {
+    it('should have head and script', function (done) {
       chai.request('http://localhost:8080')
         .get('/boilerplate/')
         .end(function (err, res) {
