@@ -27,7 +27,7 @@ let modules = { };
  * using log format starting with [time]
  */
 if (config.server.verbose) {
-  morgan.token('time', () => { // jscs:ignore jsDoc
+  morgan.token('time', () => {
     return dateFormat(new Date(), 'HH:MM:ss');
   });
   app.use(morgan('[' + chalk.gray(':time') + '] ' +
@@ -74,7 +74,7 @@ app.get('/app', (req, res) => {
  * Routes from modules
  */
 glob.sync(config.server.modules + '/*/server/index.js')
-  .forEach((filename) => { // jscs:ignore jsDoc
+  .forEach((filename) => {
     const regex = new RegExp(config.server.modules + '(/[^/]+)/server/index.js');
     const baseRoute = filename.replace(regex, '$1');
     modules[baseRoute] = require('./' + path.join(config.server.modules, baseRoute, 'config.json'));

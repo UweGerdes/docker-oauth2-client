@@ -50,7 +50,7 @@ function getHostData(req) {
   let livereloadPort = config.server.livereloadPort || process.env.LIVERELOAD_PORT;
   const host = req.get('Host');
   if (host.indexOf(':') > 0) {
-    livereloadPort = parseInt(host.split(':')[1]) + 1;
+    livereloadPort = parseInt(host.split(':')[1], 10) + 1;
   }
   const module = require(path.join('..', 'config.json'));
   return {

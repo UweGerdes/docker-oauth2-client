@@ -14,7 +14,7 @@ let handler = {};
 handler['data-open-url'] = {
   elements: document.querySelectorAll('[data-open-url]'),
   event: 'click',
-  func: function (event) { // jscs:ignore jsDoc
+  func: function (event) {
     const element = event.target;
     document.location.href = element.getAttribute('data-open-url');
   }
@@ -40,8 +40,8 @@ function attachEventHandler(element, event, handler) {
 /**
  * attach event handlers
  */
-Object.values(handler).forEach((handler) => { // jscs:ignore jsDoc
-  handler.elements.forEach((element) => { // jscs:ignore jsDoc
+Object.values(handler).forEach((handler) => {
+  handler.elements.forEach((element) => {
     attachEventHandler(element, handler.event, handler.func);
   });
 });

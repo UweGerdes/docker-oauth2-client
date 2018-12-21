@@ -41,6 +41,7 @@ module.exports = {
     'no-unneeded-ternary': 2,
     'no-unreachable': 2,
     'no-underscore-dangle': 0,
+    'no-unused-expressions': 0,
     'no-useless-escape': 0,
     'no-use-before-define': [1, 'nofunc'],
     'no-var': 0,
