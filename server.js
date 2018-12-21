@@ -79,7 +79,7 @@ app.get('/app', (req, res) => {
 /**
  * Routes from modules
  */
-glob.sync(modulesRoot + '/**/server/index.js')
+glob.sync(modulesRoot + '/*/server/index.js')
   .forEach((filename) => { // jscs:ignore jsDoc
     const regex = new RegExp(modulesRoot + '(/[^/]+)/server/index.js');
     const baseRoute = filename.replace(regex, '$1');

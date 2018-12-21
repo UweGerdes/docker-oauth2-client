@@ -67,7 +67,7 @@ gulp:
       - 'modules/**/*.less'
     puglint:
       - '**/*.pug'
-    server-changed:
+    server:
       - './server.js'
       - './modules/**/!(tests)/server/*.js'
     livereload:
