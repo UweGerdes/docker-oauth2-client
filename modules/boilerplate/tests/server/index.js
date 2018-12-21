@@ -1,5 +1,5 @@
 /**
- * Test for vCard page elements
+ * Test for boilerplate page elements
  */
 'use strict';
 
@@ -15,7 +15,7 @@ const chai = require('chai'),
 
 chai.use(chaiHttp);
 
-describe('/boilerplate/tests/server/page.js', function () {
+describe('/boilerplate/tests/server/index.js', function () {
   describe('GET /boilerplate/', function () {
     it('should have head and script', function (done) {
       chai.request('http://localhost:8080')

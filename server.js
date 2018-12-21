@@ -3,6 +3,7 @@
  *
  * @module server
  */
+
 'use strict';
 
 const bodyParser = require('body-parser'),
@@ -81,12 +82,13 @@ app.get('/app', (req, res) => {
  */
 glob.sync(modulesRoot + '/*/server/index.js')
   .forEach((filename) => { // jscs:ignore jsDoc
-    const regex = new RegExp(modulesRoot + '(/[^/]+)/server/index.js');
-    const baseRoute = filename.replace(regex, '$1');
-    modules[baseRoute] = require('./' + path.join(modulesRoot, baseRoute, 'config.json'));
-    app.use(baseRoute, require(filename));
-  })
-;
+      const regex = new RegExp(modulesRoot + '(/[^/]+)/server/index.js');
+      const baseRoute = filename.replace(regex, '$1');
+      modules[baseRoute] = require('./' + path.join(modulesRoot, baseRoute, 'config.json'));
+      app.use(baseRoute, require(filename)
+    );
+  }
+);
 
 /**
  * Route for everything else
@@ -143,7 +145,7 @@ function getHostData(req) {
   let livereloadPort = config.server.livereloadPort;
   const host = req.get('Host');
   if (host.indexOf(':') > 0) {
-    livereloadPort = parseInt(host.split(':')[1]) + 1;
+    livereloadPort = parseInt(host.split(':')[1], 10) + 1;
   }
   return {
     hostname: req.hostname,
