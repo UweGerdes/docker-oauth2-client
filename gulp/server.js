@@ -84,6 +84,18 @@ const tasks = {
       .pipe(pipeLog({ message: 'livereload: <%= file.path %>', title: 'Gulp livereload' }));
   },
   /**
+   * ### trigger of livereload task with first file
+   *
+   * @task livereload-delayed
+   * @namespace tasks
+   */
+  'livereload-index': () => {
+    return gulp.src(config.gulp.watch.livereload[0])
+      .pipe(livereload())
+      .pipe(pipeLog({ message: 'livereload: <%= file.path %>', title: 'Gulp livereload' }))
+      ;
+  },
+  /**
    * ### server livereload start task
    *
    * @task livereload-start

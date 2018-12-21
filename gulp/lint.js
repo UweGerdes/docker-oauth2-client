@@ -14,8 +14,9 @@ const gulp = require('gulp'),
   pugLinter = require('gulp-pug-linter'),
   sequence = require('gulp-sequence'),
   yamlValidate = require('gulp-yaml-validate'),
-  jshint = require('jshint').JSHINT,
   path = require('path'),
+  PluginError = require('plugin-error'),
+  check = require('syntax-error'),
   config = require('../lib/config'),
   filePromises = require('./lib/files-promises'),
   loadTasks = require('./lib/load-tasks');
@@ -62,11 +63,13 @@ const tasks = {
       .pipe(eslint({ configFile: path.join(__dirname, '..', '.eslintrc.js'), fix: true }))
       .pipe(eslint.format())
       .pipe(eslint.results(results => {
-        console.log(
-          `Total Results: ${results.length},  ` +
-            `Warnings: ${results.warningCount}, ` +
-            `Errors: ${results.errorCount}`
-        );
+        if (results.length) {
+          console.log(
+            `Total Results: ${results.length},  ` +
+              `Warnings: ${results.warningCount}, ` +
+              `Errors: ${results.errorCount}`
+          );
+        }
       }))
       .pipe(gulpIf(isFixed, log({
         message: 'fixture: <%= file.path %>',
@@ -130,6 +133,19 @@ const tasks = {
       .pipe(pugLinter({ reporter: 'default', failAfterError: true }));
   },
   /**
+   * ### lint ejs and livereload task
+   *
+   * @task lint
+   * @namespace tasks
+   * @param {function} callback - gulp callback
+   */
+  'ejslint-livereload': [['ejslint'], (callback) => {
+    sequence(
+      'livereload-index',
+      callback
+    );
+  }],
+  /**
    * #### Lint ejs files
    *
    * validate ejs files
@@ -144,9 +160,6 @@ const tasks = {
    * @param {function} callback - gulp callback
    */
   'ejslint': (callback) => {
-
-    // some Promises for ejslint
-
     /**
      * Replace expression output tags
      *
@@ -183,41 +196,22 @@ const tasks = {
     };
 
     /**
-     * jshint the remaining content
+     * check the remaining content
      *
      * @private
      * @param {function} file - file object with contents
      */
-    const fileJsHint = (file) => {
+    const fileCheck = (file) => {
       return new Promise((resolve) => {
-        jshint(file.jsCode, { esversion: 6, asi: true }, { });
-        if (jshint.errors) {
-          file.errors = jshint.errors;
+        const err = check(file.jsCode, path.relative(process.cwd(), file.filename));
+        if (err) {
+          resolve(err);
         }
-        file.jshint = jshint.data();
-        resolve(file);
+        resolve();
       });
     };
 
-    /**
-     * report errors
-     *
-     * @private
-     * @param {function} file - file object with contents
-     */
-    const report = (file) => {
-      return new Promise((resolve) => {
-        if (file.jshint.errors) {
-          console.log('ERRORS in ' + file.filename);
-          file.jshint.errors.forEach((error) => {
-            console.log('ERROR: ' + error.line + '/' + error.character + ' ' + error.reason);
-          });
-        }
-        resolve(file);
-      });
-    };
-
-    Promise.all(config.gulp.watch.ejslint.map(filePromises.getFilenames))
+    Promise.all(config.gulp.watch['ejslint-livereload'].map(filePromises.getFilenames))
       .then((filenames) => [].concat(...filenames))
       .then((filenames) => {
         return Promise.all(
@@ -236,16 +230,15 @@ const tasks = {
       })
       .then((files) => {
         return Promise.all(
-          files.map(fileJsHint)
+          files.map(fileCheck)
         );
       })
-      .then((files) => {
-        return Promise.all(
-          files.map(report)
-        );
-      })
-      .then(() => {
-        callback();
+      .then((errorList) => {
+        let error;
+        if (errorList.join('').length > 0) {
+          error = new PluginError('ejslint', errorList.join(''));
+        }
+        callback(error);
       });
   }
 };
@@ -253,5 +246,8 @@ const tasks = {
 if (process.env.NODE_ENV === 'development') {
   loadTasks.importTasks(tasks);
 } else {
-  loadTasks.importTasks({ jshint: () => { } });
+  loadTasks.importTasks({
+    eslint: () => { },
+    ejslint: () => { }
+  });
 }

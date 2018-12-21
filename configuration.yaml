@@ -18,6 +18,7 @@ gulp:
       tests:
         - 'test-modules'
       lint:
+        - 'ejslint'
         - 'eslint'
         - 'jsonlint'
         - 'lesshint'
@@ -51,8 +52,6 @@ gulp:
       - 'nofile.js'
     jsonlint:
       - '**/*.json'
-      - '.jscsrc'
-      - '.jshintrc'
       - '.lesshintrc'
     lesshint:
       - 'modules/**/less/**/*.less'
@@ -60,7 +59,7 @@ gulp:
     yamllint:
       - '**/*.yaml'
       - '**/*.yml'
-    ejslint:
+    ejslint-livereload:
       - '**/*.ejs'
     less:
       - 'src/less/**/*.less'
@@ -72,7 +71,6 @@ gulp:
       - './modules/**/!(tests)/server/*.js'
     livereload:
       - 'public/**/*.html'
-      - 'modules/**/*.ejs'
       - 'modules/**/*.pug'
       - 'public/img/**/*.*'
       - 'public/css/*.css'
