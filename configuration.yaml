@@ -18,6 +18,7 @@ gulp:
       tests:
         - 'test-modules'
       lint:
+        - 'eslint'
         - 'jshint'
         - 'jsonlint'
         - 'lesshint'
@@ -39,12 +40,19 @@ gulp:
       server:
         - 'server-changed'
   watch:
+    eslint:
+      - '*.js'
+      - '.eslintrc.js'
+      - 'gulp/**/*.js'
+      - 'lib/**/*.js'
+      - 'modules/**/*.js'
     js:
       - 'modules/*/js/*.js'
     jsdoc:
       - 'nofile.js'
     jshint:
       - '*.js'
+      - '.eslintrc.js'
       - 'gulp/**/*.js'
       - 'lib/**/*.js'
       - 'modules/**/*.js'
