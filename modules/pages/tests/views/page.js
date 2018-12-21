@@ -1,6 +1,7 @@
 /**
- * Test for vCard page elements
+ * Test for page elements
  */
+
 'use strict';
 
 /* jshint expr: true, mocha: true, browser: true */
@@ -10,8 +11,7 @@ const chai = require('chai'),
   jsdom = require('jsdom'),
   assert = chai.assert,
   expect = chai.expect,
-  { JSDOM } = jsdom
-  ;
+  { JSDOM } = jsdom;
 
 chai.use(chaiHttp);
 
@@ -29,7 +29,8 @@ describe('/pages/tests/views/page.js', function () {
           assert.equal(document.head.getElementsByTagName('link').length, 1);
           assert.equal(
             document.head.getElementsByTagName('link')[0].attributes.href.nodeValue,
-            '/css/app.css');
+            '/css/app.css'
+          );
           const headline = document.getElementById('headline');
           assert.equal(headline.textContent, 'Module:');
           done();
@@ -47,7 +48,8 @@ describe('/pages/tests/views/page.js', function () {
           assert.equal(footer.textContent.trim(), '© 2018 Uwe Gerdes');
           assert.equal(
             document.body.getElementsByTagName('script')[0].attributes.src.nodeValue,
-            'http://localhost:8081/livereload.js');
+            'http://localhost:8081/livereload.js'
+          );
           done();
         });
     });

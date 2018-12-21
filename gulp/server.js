@@ -35,7 +35,7 @@ const tasks = {
    * @namespace tasks
    * @param {function} callback - gulp callback
    */
-  'server': [['jshint'], (callback) => {
+  'server': [['eslint'], (callback) => {
     sequence(
       ...config.gulp.start[process.env.NODE_ENV].server,
       callback

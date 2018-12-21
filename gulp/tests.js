@@ -45,7 +45,7 @@ const tasks = {
    * @namespace tasks
    * @param {function} callback - gulp callback
    */
-  'test-modules': [['jshint'], (callback) => {
+  'test-modules': [['eslint'], (callback) => {
     Promise.all(config.gulp.tests.modules.map(filePromises.getFilenames))
       .then((filenames) => [].concat(...filenames))
       .then(filePromises.getRecentFiles)
