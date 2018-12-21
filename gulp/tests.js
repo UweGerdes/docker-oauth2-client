@@ -3,6 +3,7 @@
  *
  * @module gulp/test
  */
+
 'use strict';
 
 const gulp = require('gulp'),
@@ -11,8 +12,7 @@ const gulp = require('gulp'),
   sequence = require('gulp-sequence'),
   config = require('../lib/config'),
   filePromises = require('./lib/files-promises'),
-  loadTasks = require('./lib/load-tasks')
-  ;
+  loadTasks = require('./lib/load-tasks');
 
 /**
  * log only to console, not GUI
@@ -46,28 +46,26 @@ const tasks = {
    * @param {function} callback - gulp callback
    */
   'test-modules': [['jshint'], (callback) => {
-      Promise.all(config.gulp.tests.modules.map(filePromises.getFilenames))
-      .then((filenames) => [].concat(...filenames)) // jscs:ignore jsDoc
+    Promise.all(config.gulp.tests.modules.map(filePromises.getFilenames))
+      .then((filenames) => [].concat(...filenames))
       .then(filePromises.getRecentFiles)
-      .then((filenames) => { // jscs:ignore jsDoc
+      .then((filenames) => {
         const self = gulp.src(filenames, { read: false })
         // `gulp-mocha` needs filepaths so you can't have any plugins before it
-        .pipe(mocha({ reporter: 'tap', timeout: 10000 })) // timeout for Raspberry Pi 3
-        .on('error', function () { // jscs:ignore jsDoc
-          self.emit('end');
-        })
-        .pipe(log({ message: 'tested: <%= file.path %>', title: 'Gulp test-modules' }));
+          .pipe(mocha({ reporter: 'tap', timeout: 10000 })) // timeout for Raspberry Pi 3
+          .on('error', function () {
+            self.emit('end');
+          })
+          .pipe(log({ message: 'tested: <%= file.path %>', title: 'Gulp test-modules' }));
         return self;
       })
-      .then(() => { // jscs:ignore jsDoc
+      .then(() => {
         callback();
       })
-      .catch(err => console.log(err)) // jscs:ignore jsDoc
-      ;
-    }
-  ],
+      .catch(err => console.log(err));
+  }]
 };
 
-if (process.env.NODE_ENV == 'development') {
+if (process.env.NODE_ENV === 'development') {
   loadTasks.importTasks(tasks);
 }

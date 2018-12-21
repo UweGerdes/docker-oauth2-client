@@ -7,6 +7,7 @@
 const gulp = require('gulp'),
   changedInPlace = require('gulp-changed-in-place'),
   eslint = require('gulp-eslint'),
+  gulpIf = require('gulp-if'),
   jscs = require('gulp-jscs'),
   jscsStylish = require('gulp-jscs-stylish'),
   gulpJshint = require('gulp-jshint'),
@@ -55,21 +56,27 @@ const tasks = {
    * @namespace tasks
    */
   'eslint': () => {
+    const isFixed = (file) => {
+      return file.eslint != null && file.eslint.fixed;
+    };
     return gulp.src(config.gulp.watch.eslint)
       .pipe(changedInPlace({ howToDetermineDifference: 'modification-time' }))
-      .pipe(log({ message: 'linting: <%= file.path %> ', title: 'Gulp eslint' }))
-      .pipe(eslint({ configFile: path.join(__dirname, '..', '.eslintrc.js') }))
+      .pipe(log({ message: 'linting: <%= file.path %>', title: 'Gulp eslint' }))
+      .pipe(eslint({ configFile: path.join(__dirname, '..', '.eslintrc.js'), fix: true }))
       .pipe(eslint.format())
-      .pipe(eslint.results(results => { // jscs:ignore jsDoc
-          console.log(
-            `Total Results: ${results.length},  ` +
+      .pipe(eslint.results(results => {
+        console.log(
+          `Total Results: ${results.length},  ` +
             `Warnings: ${results.warningCount}, ` +
             `Errors: ${results.errorCount}`
-          );
-        })
-      )
-      .pipe(eslint.failAfterError())
-      ;
+        );
+      }))
+      .pipe(gulpIf(isFixed, log({
+        message: 'fixture: <%= file.path %>',
+        title: 'Gulp eslint --fix'
+      })))
+      .pipe(gulpIf(isFixed, gulp.dest('fixture')))
+      .pipe(eslint.failAfterError());
   },
   /**
    * #### Lint js files
@@ -100,8 +107,7 @@ const tasks = {
   'jsonlint': () => {
     return gulp.src(config.gulp.watch.jsonlint)
       .pipe(jsonlint())
-      .pipe(jsonlint.reporter())
-      ;
+      .pipe(jsonlint.reporter());
   },
   /**
    * #### Lint less files
@@ -115,8 +121,7 @@ const tasks = {
     return gulp.src(config.gulp.watch.lesshint)
       .pipe(lesshint())
       .on('error', function () {})
-      .pipe(lesshint.reporter())
-      ;
+      .pipe(lesshint.reporter());
   },
   /**
    * #### Lint yaml files
@@ -129,10 +134,9 @@ const tasks = {
   'yamllint': () => {
     return gulp.src(config.gulp.watch.yamllint)
       .pipe(yamlValidate({ space: 2 }))
-      .on('error', (msg) => { // jscs:ignore jsDoc
+      .on('error', (msg) => {
         console.log(msg);
-      })
-      ;
+      });
   },
   /**
    * #### Lint pug files
@@ -144,8 +148,7 @@ const tasks = {
    */
   'puglint': () => {
     return gulp.src(config.gulp.watch.puglint)
-      .pipe(pugLinter({ reporter: 'default', failAfterError: true }))
-      ;
+      .pipe(pugLinter({ reporter: 'default', failAfterError: true }));
   },
   /**
    * #### Lint ejs files
@@ -172,7 +175,7 @@ const tasks = {
      * @param {function} file - file object with contents
      */
     const replaceOutputTags = (file) => {
-      return new Promise((resolve) => { // jscs:ignore jsDoc
+      return new Promise((resolve) => {
         file.noOutput = '<% var output, output_raw; %>' + file.content
           .replace(/<%= *(.+?) *%>/g, '<% output = $1; %>')
           .replace(/<%- *(.+?) *%>/g, '<% output_raw = $1; %>');
@@ -187,10 +190,10 @@ const tasks = {
      * @param {function} file - file object with contents
      */
     const replaceEjsTags = (file) => {
-      return new Promise((resolve) => { // jscs:ignore jsDoc
+      return new Promise((resolve) => {
         let parts = file.noOutput.split(/<%/);
         let output = [];
-        parts.forEach((part) => { // jscs:ignore jsDoc
+        parts.forEach((part) => {
           let snips = part.split(/%>/);
           output.push(snips[0]);
           output.push(snips.join('%>').replace(/[^\n]/g, ''));
@@ -207,7 +210,7 @@ const tasks = {
      * @param {function} file - file object with contents
      */
     const fileJsHint = (file) => {
-      return new Promise((resolve) => { // jscs:ignore jsDoc
+      return new Promise((resolve) => {
         jshint(file.jsCode, { esversion: 6, asi: true }, { });
         if (jshint.errors) {
           file.errors = jshint.errors;
@@ -224,10 +227,10 @@ const tasks = {
      * @param {function} file - file object with contents
      */
     const report = (file) => {
-      return new Promise((resolve) => { // jscs:ignore jsDoc
+      return new Promise((resolve) => {
         if (file.jshint.errors) {
           console.log('ERRORS in ' + file.filename);
-          file.jshint.errors.forEach((error) => { // jscs:ignore jsDoc
+          file.jshint.errors.forEach((error) => {
             console.log('ERROR: ' + error.line + '/' + error.character + ' ' + error.reason);
           });
         }
@@ -236,41 +239,40 @@ const tasks = {
     };
 
     Promise.all(config.gulp.watch.ejslint.map(filePromises.getFilenames))
-    .then((filenames) => [].concat(...filenames)) // jscs:ignore jsDoc
-    .then((filenames) => { // jscs:ignore jsDoc
-      return Promise.all(
-        filenames.map(filePromises.getFileContent)
-      );
-    })
-    .then((files) => { // jscs:ignore jsDoc
-      return Promise.all(
-        files.map(replaceOutputTags)
-      );
-    })
-    .then((files) => { // jscs:ignore jsDoc
-      return Promise.all(
-        files.map(replaceEjsTags)
-      );
-    })
-    .then((files) => { // jscs:ignore jsDoc
-      return Promise.all(
-        files.map(fileJsHint)
-      );
-    })
-    .then((files) => { // jscs:ignore jsDoc
-      return Promise.all(
-        files.map(report)
-      );
-    })
-    .then(() => { // jscs:ignore jsDoc
-      callback();
-    })
-    ;
+      .then((filenames) => [].concat(...filenames))
+      .then((filenames) => {
+        return Promise.all(
+          filenames.map(filePromises.getFileContent)
+        );
+      })
+      .then((files) => {
+        return Promise.all(
+          files.map(replaceOutputTags)
+        );
+      })
+      .then((files) => {
+        return Promise.all(
+          files.map(replaceEjsTags)
+        );
+      })
+      .then((files) => {
+        return Promise.all(
+          files.map(fileJsHint)
+        );
+      })
+      .then((files) => {
+        return Promise.all(
+          files.map(report)
+        );
+      })
+      .then(() => {
+        callback();
+      });
   }
 };
 
 if (process.env.NODE_ENV === 'development') {
   loadTasks.importTasks(tasks);
 } else {
-  loadTasks.importTasks({ jshint: () => { } }); // jscs:ignore jsDoc
+  loadTasks.importTasks({ jshint: () => { } });
 }

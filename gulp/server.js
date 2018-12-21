@@ -15,8 +15,7 @@ const gulp = require('gulp'),
   config = require('../lib/config'),
   ipv4addresses = require('../lib/ipv4addresses.js'),
   loadTasks = require('./lib/load-tasks'),
-  log = require('../lib/log')
-  ;
+  log = require('../lib/log');
 
 /**
  * log only to console, not GUI
@@ -51,11 +50,10 @@ const tasks = {
    */
   'server-start': (callback) => {
     server.listen({
-        path: config.server.server,
-        env: { VERBOSE: true, FORCE_COLOR: 1 }
-      },
-      callback
-    );
+      path: config.server.server,
+      env: { VERBOSE: true, FORCE_COLOR: 1 }
+    },
+    callback);
   },
   /**
    * ### server changed task
@@ -65,7 +63,7 @@ const tasks = {
    * @param {function} callback - gulp callback
    */
   'server-changed': (callback) => {
-    server.changed((error) => { // jscs:ignore jsDoc
+    server.changed((error) => {
       if (!error) {
         livereload.changed({ path: '/', quiet: false });
       }
@@ -83,8 +81,7 @@ const tasks = {
     return gulp.src(config.gulp.watch.livereload)
       .pipe(changedInPlace({ howToDetermineDifference: 'modification-time' }))
       .pipe(livereload())
-      .pipe(pipeLog({ message: 'livereload: <%= file.path %>', title: 'Gulp livereload' }))
-      ;
+      .pipe(pipeLog({ message: 'livereload: <%= file.path %>', title: 'Gulp livereload' }));
   },
   /**
    * ### server livereload start task

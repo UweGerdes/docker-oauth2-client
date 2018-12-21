@@ -17,14 +17,7 @@ const bodyParser = require('body-parser'),
   config = require('./lib/config'),
   ipv4addresses = require('./lib/ipv4addresses'),
   log = require('./lib/log'),
-  app = express()
-  ;
-
-const httpPort = config.server.httpPort,
-  docRoot = config.server.docroot,
-  modulesRoot = config.server.modules,
-  verbose = config.server.verbose
-  ;
+  app = express();
 
 let modules = { };
 
@@ -33,7 +26,7 @@ let modules = { };
  *
  * using log format starting with [time]
  */
-if (verbose) {
+if (config.server.verbose) {
   morgan.token('time', () => { // jscs:ignore jsDoc
     return dateFormat(new Date(), 'HH:MM:ss');
   });
@@ -55,7 +48,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Serve static files
-app.use(express.static(docRoot));
+app.use(express.static(config.server.docroot));
 
 /**
  * Route for root dir
@@ -64,7 +57,7 @@ app.use(express.static(docRoot));
  * @param {Object} res - response
  */
 app.get('/', (req, res) => {
-  res.sendFile(path.join(docRoot, 'index.html'));
+  res.sendFile(path.join(config.server.docroot, 'index.html'));
 });
 
 /**
@@ -80,15 +73,13 @@ app.get('/app', (req, res) => {
 /**
  * Routes from modules
  */
-glob.sync(modulesRoot + '/*/server/index.js')
+glob.sync(config.server.modules + '/*/server/index.js')
   .forEach((filename) => { // jscs:ignore jsDoc
-      const regex = new RegExp(modulesRoot + '(/[^/]+)/server/index.js');
-      const baseRoute = filename.replace(regex, '$1');
-      modules[baseRoute] = require('./' + path.join(modulesRoot, baseRoute, 'config.json'));
-      app.use(baseRoute, require(filename)
-    );
-  }
-);
+    const regex = new RegExp(config.server.modules + '(/[^/]+)/server/index.js');
+    const baseRoute = filename.replace(regex, '$1');
+    modules[baseRoute] = require('./' + path.join(config.server.modules, baseRoute, 'config.json'));
+    app.use(baseRoute, require(filename));
+  });
 
 /**
  * Route for everything else
@@ -102,9 +93,9 @@ app.get('*', (req, res) => {
 
 // Fire it up!
 log.info('server listening on ' +
-  chalk.greenBright('http://' + ipv4addresses.get()[0] + ':' + httpPort));
+  chalk.greenBright('http://' + ipv4addresses.get()[0] + ':' + config.server.httpPort));
 
-app.listen(httpPort);
+app.listen(config.server.httpPort);
 
 /**
  * Handle server errors
@@ -132,7 +123,7 @@ app.use((err, req, res, next) => {
  * @param {String} type - file type (ejs, jade, pug, html)
  */
 function viewPath(page = '404', type = 'ejs') {
-  return modulesRoot + '/pages/' + page + '/views/index.' + type;
+  return config.server.modules + '/pages/' + page + '/views/index.' + type;
 }
 
 /**
@@ -149,7 +140,7 @@ function getHostData(req) {
   }
   return {
     hostname: req.hostname,
-    httpPort: httpPort,
+    httpPort: config.server.httpPort,
     livereloadPort: livereloadPort,
     modules: modules
   };

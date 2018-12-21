@@ -2,11 +2,11 @@
  * @module lib:files-promises
  * @private
  */
+
 'use strict';
 
 const fs = require('fs'),
-  glob = require('glob')
-  ;
+  glob = require('glob');
 
 // execute only one test file if one has changed in recentTime, otherwise all
 const recentTime = 60; // * 60;
@@ -18,8 +18,8 @@ const recentTime = 60; // * 60;
  * @param {function} path - patterns for paths
  */
 const getFilenames = (path) => {
-  return new Promise((resolve, reject) => { // jscs:ignore jsDoc
-    glob(path, (error, files) => { // jscs:ignore jsDoc
+  return new Promise((resolve, reject) => {
+    glob(path, (error, files) => {
       if (error) {
         reject(error);
       } else {
@@ -46,11 +46,11 @@ function getRecentFiles(files) {
   }
   const now = new Date();
   if (now.getTime() - bestTime < recentTime * 1000) {
-    return new Promise((resolve) => { // jscs:ignore jsDoc
+    return new Promise((resolve) => {
       resolve([newest]);
     });
   } else {
-    return new Promise((resolve) => { // jscs:ignore jsDoc
+    return new Promise((resolve) => {
       resolve(files);
     });
   }
@@ -63,8 +63,8 @@ function getRecentFiles(files) {
  * @param {function} filename - to open
  */
 const getFileContent = (filename) => {
-  return new Promise((resolve, reject) => { // jscs:ignore jsDoc
-    fs.readFile(filename, (error, data) => { // jscs:ignore jsDoc
+  return new Promise((resolve, reject) => {
+    fs.readFile(filename, (error, data) => {
       if (error) {
         reject(error);
       } else {
