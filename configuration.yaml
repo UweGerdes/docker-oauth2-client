@@ -19,7 +19,6 @@ gulp:
         - 'test-modules'
       lint:
         - 'eslint'
-        - 'jshint'
         - 'jsonlint'
         - 'lesshint'
         - 'yamllint'
@@ -50,9 +49,6 @@ gulp:
       - 'modules/*/js/*.js'
     jsdoc:
       - 'nofile.js'
-    jshint:
-      - '*.js'
-      - '!modules/**/tests/e2e-workflow/*.js'
     jsonlint:
       - '**/*.json'
       - '.jscsrc'

@@ -4,8 +4,6 @@
 
 'use strict';
 
-/* jshint browser: true */
-
 let handler = {};
 
 /**

@@ -4,8 +4,6 @@
 
 'use strict';
 
-/* jshint expr: true, mocha: true, browser: true */
-
 const chai = require('chai'),
   chaiHttp = require('chai-http'),
   jsdom = require('jsdom'),

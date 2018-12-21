@@ -8,9 +8,6 @@ const gulp = require('gulp'),
   changedInPlace = require('gulp-changed-in-place'),
   eslint = require('gulp-eslint'),
   gulpIf = require('gulp-if'),
-  jscs = require('gulp-jscs'),
-  jscsStylish = require('gulp-jscs-stylish'),
-  gulpJshint = require('gulp-jshint'),
   jsonlint = require('gulp-jsonlint'),
   lesshint = require('gulp-lesshint'),
   notify = require('gulp-notify'),
@@ -77,24 +74,6 @@ const tasks = {
       })))
       .pipe(gulpIf(isFixed, gulp.dest('fixture')))
       .pipe(eslint.failAfterError());
-  },
-  /**
-   * #### Lint js files
-   *
-   * apply jshint and jscs to js files
-   *
-   * @task jshint
-   * @namespace tasks
-   */
-  'jshint': () => {
-    return gulp.src(config.gulp.watch.jshint)
-      .pipe(changedInPlace({ howToDetermineDifference: 'modification-time' }))
-      .pipe(log({ message: 'linting: <%= file.path %>', title: 'Gulp jshint' }))
-      .pipe(gulpJshint())
-      .pipe(jscs())
-      .pipe(jscsStylish.combineWithHintResults())
-      .pipe(gulpJshint.reporter('default'))
-      .pipe(gulpJshint.reporter('fail'));
   },
   /**
    * #### Lint json files
