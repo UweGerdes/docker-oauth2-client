@@ -1,6 +1,7 @@
 /**
  * scripts for boilerplate
  */
+
 'use strict';
 
 /* jshint browser: true */

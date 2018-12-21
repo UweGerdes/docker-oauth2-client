@@ -3,12 +3,12 @@
  *
  * @module boilerplate/controller
  */
+
 'use strict';
 
 const path = require('path'),
   config = require('../../../lib/config'),
-  model = require('./model.js')
-  ;
+  model = require('./model.js');
 
 const viewBase = path.join(path.dirname(__dirname), 'views');
 
@@ -27,13 +27,12 @@ const viewRenderParams = {
  */
 const index = (req, res) => {
   let data = Object.assign({
-      title: 'boilerplate'
-    },
-    req.params,
-    getHostData(req),
-    viewRenderParams,
-    model.getData()
-  );
+    title: 'boilerplate'
+  },
+  req.params,
+  getHostData(req),
+  viewRenderParams,
+  model.getData());
   res.render(path.join(viewBase, 'index.pug'), data);
 };
 

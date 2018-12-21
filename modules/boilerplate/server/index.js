@@ -3,6 +3,7 @@
  *
  * @module boilerplate/index
  */
+
 'use strict';
 
 const express = require('express'),

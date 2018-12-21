@@ -3,6 +3,7 @@
  *
  * @module boilerplate/model
  */
+
 'use strict';
 
 let data = { modelData: 'boilerplate data' };
