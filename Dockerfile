@@ -1,7 +1,7 @@
 # Dockerfile for expressjs boilerplate
 
-ARG BASEIMAGE_VERSION=latest
-FROM uwegerdes/nodejs:${BASEIMAGE_VERSION}
+ARG NODEIMAGE_VERSION=latest
+FROM uwegerdes/nodejs:${NODEIMAGE_VERSION}
 
 MAINTAINER Uwe Gerdes <entwicklung@uwegerdes.de>
 
