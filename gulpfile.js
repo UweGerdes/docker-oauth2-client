@@ -1,5 +1,5 @@
 /**
- * gulpfile for project motion
+ * gulpfile for project boilerplate
  *
  * (c) Uwe Gerdes, entwicklung@uwegerdes.de
  *
