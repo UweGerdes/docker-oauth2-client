@@ -86,7 +86,7 @@ const tasks = {
   /**
    * ### trigger of livereload task with first file
    *
-   * @task livereload-delayed
+   * @task livereload-index
    * @namespace tasks
    */
   'livereload-index': () => {
