@@ -1,5 +1,5 @@
 /**
- * ## HTTP-Server for motion
+ * ## HTTP-Server for boilerplate
  *
  * @module server
  */
