@@ -38,7 +38,7 @@ const tasks = {
    * @task less
    * @namespace tasks
    */
-  'less': () => {
+  'less': [['lesshint'], () => {
     return combiner.obj([
       gulp.src(config.gulp.build.less.src),
       less({
@@ -49,7 +49,7 @@ const tasks = {
       notify({ message: 'written: <%= file.path %>', title: 'Gulp less' })
     ])
       .on('error', () => { });
-  },
+  }],
   /**
    * #### Compile js files
    *

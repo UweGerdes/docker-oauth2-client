@@ -53,9 +53,6 @@ gulp:
     jsonlint:
       - '**/*.json'
       - '.lesshintrc'
-    lesshint:
-      - 'modules/**/less/**/*.less'
-      - 'src/less/**/*.less'
     yamllint:
       - '**/*.yaml'
       - '**/*.yml'

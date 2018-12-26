@@ -90,10 +90,11 @@ const tasks = {
    * @namespace tasks
    */
   'lesshint': () => {
-    return gulp.src(config.gulp.watch.lesshint)
+    return gulp.src(config.gulp.watch.less)
       .pipe(lesshint())
       .on('error', function () {})
-      .pipe(lesshint.reporter());
+      .pipe(lesshint.reporter())
+      .pipe(lesshint.failOnError());
   },
   /**
    * #### Lint yaml files
