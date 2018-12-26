@@ -8,21 +8,12 @@
 
 const gulp = require('gulp'),
   mocha = require('gulp-mocha'),
-  notify = require('gulp-notify'),
   sequence = require('gulp-sequence'),
+  gulpStreamToPromise = require('gulp-stream-to-promise'),
   config = require('../lib/config'),
   filePromises = require('./lib/files-promises'),
-  loadTasks = require('./lib/load-tasks');
-
-/**
- * log only to console, not GUI
- *
- * @param {pbject} options - setting options
- * @param {function} callback - gulp callback
- */
-const log = notify.withReporter((options, callback) => {
-  callback();
-});
+  loadTasks = require('./lib/load-tasks'),
+  notify = require('./lib/notify');
 
 const tasks = {
   /**
@@ -50,14 +41,14 @@ const tasks = {
       .then((filenames) => [].concat(...filenames))
       .then(filePromises.getRecentFiles)
       .then((filenames) => {
-        const self = gulp.src(filenames, { read: false })
-        // `gulp-mocha` needs filepaths so you can't have any plugins before it
+        const task = gulp.src(filenames, { read: false })
+          // `gulp-mocha` needs filepaths so you can't have any plugins before it
           .pipe(mocha({ reporter: 'tap', timeout: 10000 })) // timeout for Raspberry Pi 3
-          .on('error', function () {
-            self.emit('end');
+          .on('error', function (error) {
+            task.emit(error);
           })
-          .pipe(log({ message: 'tested: <%= file.path %>', title: 'Gulp test-modules' }));
-        return self;
+          .pipe(notify({ message: 'tested: <%= file.path %>', title: 'Gulp test' }));
+        return gulpStreamToPromise(task);
       })
       .then(() => {
         callback();

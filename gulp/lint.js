@@ -10,7 +10,6 @@ const gulp = require('gulp'),
   gulpIf = require('gulp-if'),
   jsonlint = require('gulp-jsonlint'),
   lesshint = require('gulp-lesshint'),
-  notify = require('gulp-notify'),
   pugLinter = require('gulp-pug-linter'),
   sequence = require('gulp-sequence'),
   yamlValidate = require('gulp-yaml-validate'),
@@ -19,17 +18,8 @@ const gulp = require('gulp'),
   check = require('syntax-error'),
   config = require('../lib/config'),
   filePromises = require('./lib/files-promises'),
-  loadTasks = require('./lib/load-tasks');
-
-/**
- * log only to console, not GUI
- *
- * @param {pbject} options - setting options
- * @param {function} callback - gulp callback
- */
-const log = notify.withReporter((options, callback) => {
-  callback();
-});
+  loadTasks = require('./lib/load-tasks'),
+  notify = require('./lib/notify');
 
 const tasks = {
   /**
@@ -59,7 +49,7 @@ const tasks = {
     };
     return gulp.src(config.gulp.watch.eslint)
       .pipe(changedInPlace({ howToDetermineDifference: 'modification-time' }))
-      .pipe(log({ message: 'linting: <%= file.path %>', title: 'Gulp eslint' }))
+      .pipe(notify({ message: 'linting: <%= file.path %>', title: 'Gulp eslint' }))
       .pipe(eslint({ configFile: path.join(__dirname, '..', '.eslintrc.js'), fix: true }))
       .pipe(eslint.format())
       .pipe(eslint.results(results => {
@@ -71,7 +61,7 @@ const tasks = {
           );
         }
       }))
-      .pipe(gulpIf(isFixed, log({
+      .pipe(gulpIf(isFixed, notify({
         message: 'fixture: <%= file.path %>',
         title: 'Gulp eslint --fix'
       })))

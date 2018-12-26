@@ -13,4 +13,6 @@ const controller = require('./controller.js');
 // boilerplate overview
 router.get('/', controller.index);
 
-module.exports = router;
+module.exports = {
+  router: router
+};

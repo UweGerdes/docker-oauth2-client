@@ -17,7 +17,8 @@ const bodyParser = require('body-parser'),
   config = require('./lib/config'),
   ipv4addresses = require('./lib/ipv4addresses'),
   log = require('./lib/log'),
-  app = express();
+  app = express(),
+  server = require('http').createServer(app);
 
 let modules = { };
 
@@ -70,6 +71,12 @@ app.get('/app', (req, res) => {
   res.render(viewPath('app'), getHostData(req));
 });
 
+// Fire it up!
+log.info('server listening on ' +
+  chalk.greenBright('http://' + ipv4addresses.get()[0] + ':' + config.server.httpPort));
+
+server.listen(config.server.httpPort);
+
 /**
  * Routes from modules
  */
@@ -78,7 +85,11 @@ glob.sync(config.server.modules + '/*/server/index.js')
     const regex = new RegExp(config.server.modules + '(/[^/]+)/server/index.js');
     const baseRoute = filename.replace(regex, '$1');
     modules[baseRoute] = require('./' + path.join(config.server.modules, baseRoute, 'config.json'));
-    app.use(baseRoute, require(filename));
+    const router = require(filename);
+    if (router.setExpress) {
+      router.setExpress(server);
+    }
+    app.use(baseRoute, router.router);
   });
 
 /**
@@ -90,12 +101,6 @@ glob.sync(config.server.modules + '/*/server/index.js')
 app.get('*', (req, res) => {
   res.status(404).render(viewPath('404'), getHostData(req));
 });
-
-// Fire it up!
-log.info('server listening on ' +
-  chalk.greenBright('http://' + ipv4addresses.get()[0] + ':' + config.server.httpPort));
-
-app.listen(config.server.httpPort);
 
 /**
  * Handle server errors

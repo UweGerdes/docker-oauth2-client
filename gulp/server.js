@@ -10,22 +10,13 @@ const gulp = require('gulp'),
   changedInPlace = require('gulp-changed-in-place'),
   server = require('gulp-develop-server'),
   livereload = require('gulp-livereload'),
-  notify = require('gulp-notify'),
   sequence = require('gulp-sequence'),
   config = require('../lib/config'),
   ipv4addresses = require('../lib/ipv4addresses.js'),
   loadTasks = require('./lib/load-tasks'),
-  log = require('../lib/log');
+  log = require('../lib/log'),
+  notify = require('./lib/notify');
 
-/**
- * log only to console, not GUI
- *
- * @param {pbject} options - setting options
- * @param {function} callback - gulp callback
- */
-const pipeLog = notify.withReporter((options, callback) => {
-  callback();
-});
 
 const tasks = {
   /**
@@ -77,11 +68,10 @@ const tasks = {
    * @namespace tasks
    */
   'livereload': () => {
-    log.info('livereload triggered');
     return gulp.src(config.gulp.watch.livereload)
       .pipe(changedInPlace({ howToDetermineDifference: 'modification-time' }))
-      .pipe(livereload())
-      .pipe(pipeLog({ message: 'livereload: <%= file.path %>', title: 'Gulp livereload' }));
+      .pipe(notify({ message: '<%= file.path %>', title: 'livereload' }))
+      .pipe(livereload({ quiet: true }));
   },
   /**
    * ### trigger of livereload task with first file
@@ -91,9 +81,8 @@ const tasks = {
    */
   'livereload-index': () => {
     return gulp.src(config.gulp.watch.livereload[0])
-      .pipe(livereload())
-      .pipe(pipeLog({ message: 'livereload: <%= file.path %>', title: 'Gulp livereload' }))
-      ;
+      .pipe(notify({ message: 'triggered', title: 'livereload' }))
+      .pipe(livereload({ quiet: true }));
   },
   /**
    * ### server livereload start task

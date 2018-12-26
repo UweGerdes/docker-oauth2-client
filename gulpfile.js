@@ -1,5 +1,5 @@
 /**
- * gulpfile for project boilerplate
+ * gulpfile
  *
  * (c) Uwe Gerdes, entwicklung@uwegerdes.de
  *

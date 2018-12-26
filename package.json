@@ -57,6 +57,7 @@
     "gulp-pug-linter": "^1.1.0",
     "gulp-rename": "^1.4.0",
     "gulp-sequence": "^1.0.0",
+    "gulp-stream-to-promise": "^0.1.0",
     "gulp-yaml-validate": "^1.0.2",
     "jsdom": "^13.0.0",
     "less-plugin-glob": "^3.0.0",
