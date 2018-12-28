@@ -53,7 +53,7 @@ const tasks = {
       .pipe(eslint({ configFile: path.join(__dirname, '..', '.eslintrc.js'), fix: true }))
       .pipe(eslint.format())
       .pipe(eslint.results(results => {
-        if (results.length) {
+        if (results.length && (results.warningCount > 0 || results.errorCount > 0)) {
           console.log(
             `Total Results: ${results.length},  ` +
               `Warnings: ${results.warningCount}, ` +

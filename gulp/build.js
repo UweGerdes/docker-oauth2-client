@@ -10,9 +10,11 @@ const gulp = require('gulp'),
   less = require('gulp-less'),
   rename = require('gulp-rename'),
   sequence = require('gulp-sequence'),
+  gulpStreamToPromise = require('gulp-stream-to-promise'),
   lessPluginGlob = require('less-plugin-glob'),
   combiner = require('stream-combiner2'),
   config = require('../lib/config'),
+  filePromises = require('./lib/files-promises'),
   loadTasks = require('./lib/load-tasks'),
   notify = require('./lib/notify');
 
@@ -58,16 +60,31 @@ const tasks = {
    * @task jsss
    * @namespace tasks
    */
-  'js': () => {
-    return gulp.src(config.gulp.build.js.src)
-      .pipe(rename(function (path) {
-        Object.keys(config.gulp.build.js.replace).forEach((key) => {
-          path.dirname = path.dirname.replace(key, config.gulp.build.js.replace[key]);
-        });
-      }))
-      .pipe(gulp.dest(config.gulp.build.js.dest))
-      .pipe(notify({ message: 'written: <%= file.path %>', title: 'Gulp js' }));
-  },
+  'js': [['eslint'], (callback) => {
+    Promise.all(config.gulp.build.js.src.map(filePromises.getFilenames))
+      .then((filenames) => [].concat(...filenames))
+      .then(filePromises.getRecentFiles)
+      .then((filenames) => {
+        const promises = [];
+        for (const filename of filenames) {
+          promises.push(gulpStreamToPromise(
+            gulp.src(filename)
+              .pipe(rename(function (path) {
+                Object.keys(config.gulp.build.js.replace).forEach((key) => {
+                  path.dirname = filename.replace(new RegExp(key), config.gulp.build.js.replace[key]);
+                });
+              }))
+              .pipe(gulp.dest(config.gulp.build.js.dest))
+              .pipe(notify({ message: 'written: <%= file.path %>', title: 'Gulp js' }))
+          ));
+        }
+        return Promise.all(promises);
+      })
+      .then(() => {
+        callback();
+      })
+      .catch(err => console.log(err));
+  }],
   /**
    * #### Compile jsdoc
    *

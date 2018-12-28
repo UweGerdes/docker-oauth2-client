@@ -21,7 +21,6 @@ gulp:
         - 'ejslint'
         - 'eslint'
         - 'jsonlint'
-        - 'lesshint'
         - 'yamllint'
         - 'puglint'
         - 'ejslint'
@@ -71,6 +70,7 @@ gulp:
       - 'modules/**/*.pug'
       - 'public/img/**/*.*'
       - 'public/css/*.css'
+    livereload-index:
       - 'public/js/**/*.js'
     test-modules:
       - 'modules/**/tests/model/*.*'
@@ -93,10 +93,11 @@ gulp:
         - 'src/**/*.js'
       dest: 'docs/jsdoc'
     js:
-      src: 'modules/*/js/*.js'
+      src:
+        - 'modules/*/js/*.js'
       dest: 'public/js'
       replace:
-        '/js': ''
+        'modules/([^/]+)/js(/[^/]+)?/.+': '$1$2'
     less:
       src: 'src/less/app.less'
       dest: 'public/css'
