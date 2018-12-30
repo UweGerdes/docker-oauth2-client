@@ -40,3 +40,9 @@ Restart it later with:
 ```bash
 $ docker start -ai expressjs-boilerplate
 ```
+
+## Using the boilerplate
+
+You should add your project in the modules subdirectory with html/ejs/pug templates, less, js, server and tests. See the sample in modules/boilerplate.
+
+Other samples are in my projects docker-vcards, docker-rpi-nodejs-gpio (more to come).
