@@ -1,0 +1,15 @@
+//- index.pug
+extends ../../pages/views/page.pug
+
+append head
+  script(src='/js/login/script.js')
+
+block content
+  div#login.login.flex-wrapper
+
+    #head.flex-block.flex-header
+      #header-wrapper.flex-wrapper
+        h1#headline.headline.flex-block.flex-left= module.name
+
+    #login-container.login-container.flex-block.flex-center
+      h2 Callback

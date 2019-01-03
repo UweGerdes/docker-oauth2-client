@@ -1,0 +1,5 @@
+name: Login
+oauth2:
+  GitHub:
+    clientID: 58ba940a3258f68253c3
+    clientSecret: 6fc9aba35b262cf97ab97a1321aeda38a572d24f
