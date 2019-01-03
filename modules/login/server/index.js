@@ -15,5 +15,6 @@ router.get('/', controller.index);
 router.get('/callback', controller.callback);
 
 module.exports = {
-  router: router
+  router: router,
+  useExpress: controller.useExpress
 };

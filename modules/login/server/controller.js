@@ -7,6 +7,7 @@
 'use strict';
 
 const axios = require('axios'),
+  session = require('express-session'),
   fs = require('fs'),
   yaml = require('js-yaml'),
   path = require('path'),
@@ -40,7 +41,7 @@ const index = (req, res) => {
   getHostData(req),
   viewRenderParams,
   model.getData());
-  if (req.session.userdata) {
+  if (req.session && req.session.userdata) {
     data.userdata = req.session.userdata;
   }
   res.render(path.join(viewBase, 'index.pug'), data);
@@ -90,9 +91,18 @@ const callback = async (req, res) => {
   }
 };
 
+const useExpress = (app) => {
+  app.use(session({
+    secret: 'uif fsranöaiorawrua vrw',
+    resave: false,
+    saveUninitialized: true
+  }));
+};
+
 module.exports = {
   index: index,
-  callback: callback
+  callback: callback,
+  useExpress: useExpress
 };
 
 /**

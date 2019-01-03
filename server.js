@@ -11,7 +11,6 @@ const bodyParser = require('body-parser'),
   chalk = require('chalk'),
   dateFormat = require('dateformat'),
   express = require('express'),
-  session = require('express-session'),
   glob = require('glob'),
   morgan = require('morgan'),
   path = require('path'),
@@ -21,7 +20,8 @@ const bodyParser = require('body-parser'),
   app = express(),
   server = require('http').createServer(app);
 
-let modules = { };
+let modules = { },
+  routers = { };
 
 /**
  * Weberver logging
@@ -36,6 +36,16 @@ if (config.server.verbose) {
     ':method :status :url :res[content-length] Bytes - :response-time ms'));
 }
 
+/**
+ * load modules and set express (perhaps module will use
+ */
+glob.sync(config.server.modules + '/*/server/index.js')
+  .forEach((filename) => {
+    const regex = new RegExp(config.server.modules + '(/[^/]+)/server/index.js');
+    const baseRoute = filename.replace(regex, '$1');
+    modules[baseRoute] = require('./' + path.join(config.server.modules, baseRoute, 'config.json'));
+    routers[baseRoute] = require(filename);
+  });
 // base directory for views
 app.set('views', __dirname);
 
@@ -49,11 +59,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // work on cookies
 app.use(cookieParser());
 
-app.use(session({
-  secret: 'uif fsranöaiorawrua vrw',
-  resave: false,
-  saveUninitialized: true
-}));
+/**
+ * use express in modules (e.g. use session in module login)
+ */
+for (const router of Object.values(routers)) {
+  if (router.useExpress) {
+    router.useExpress(app);
+  }
+}
+
 // Serve static files
 app.use(express.static(config.server.docroot));
 
@@ -84,19 +98,14 @@ log.info('server listening on ' +
 server.listen(config.server.httpPort);
 
 /**
- * Routes from modules
+ * connect server and use routes from modules
  */
-glob.sync(config.server.modules + '/*/server/index.js')
-  .forEach((filename) => {
-    const regex = new RegExp(config.server.modules + '(/[^/]+)/server/index.js');
-    const baseRoute = filename.replace(regex, '$1');
-    modules[baseRoute] = require('./' + path.join(config.server.modules, baseRoute, 'config.json'));
-    const router = require(filename);
-    if (router.setExpress) {
-      router.setExpress(app);
-    }
-    app.use(baseRoute, router.router);
-  });
+for (const [baseRoute, router] of Object.entries(routers)) {
+  if (router.connectServer) {
+    router.connectServer(server);
+  }
+  app.use(baseRoute, router.router);
+}
 
 /**
  * Route for everything else
