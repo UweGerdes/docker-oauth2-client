@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.0.12
+login with oauth, session
+
 ## 0.0.11
 adding tests
 
