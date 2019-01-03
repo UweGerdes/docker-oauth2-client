@@ -16,5 +16,10 @@ block content
       ul#login-list
         each oauth, name in module.oauth2
           li
-            a(href='https://github.com/login/oauth/authorize?client_id=' + oauth.clientID + '&redirect_uri=http://localhost:8080/login/callback')
+            a(href=
+              oauth.authorizationUri + '?' +
+              oauth.clientIDParamName + '=' + oauth.clientID + '&' +
+              oauth.redirectUriParamName + '=' +
+              oauth.redirectUri
+            )
               = 'Login with ' + name

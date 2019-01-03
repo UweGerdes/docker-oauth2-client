@@ -3,3 +3,9 @@ oauth2:
   GitHub:
     clientID: 58ba940a3258f68253c3
     clientSecret: 6fc9aba35b262cf97ab97a1321aeda38a572d24f
+    clientIDParamName: client_id
+    clientSecretParamName: client_secret
+    redirectUri: http://localhost:8080/login/callback
+    redirectUriParamName: redirect_uri
+    accessTokenUri: https://github.com/login/oauth/access_token
+    authorizationUri: https://github.com/login/oauth/authorize
