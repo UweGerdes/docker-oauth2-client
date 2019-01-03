@@ -64,7 +64,8 @@ gulp:
       - '**/*.pug'
     server:
       - './server.js'
-      - './modules/**/!(tests)/server/*.js'
+      - './modules/*/server/*.js'
+      - './modules/*/*.yaml'
     livereload:
       - 'public/**/*.html'
       - 'modules/**/*.pug'
