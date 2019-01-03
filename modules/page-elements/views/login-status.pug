@@ -1,0 +1,7 @@
+//- login-status.pug
+#login-status.login-status
+  if session.userdata
+    h2= 'Angemeldet über ' + session.oauthProvider + ' als '  + session.userdata.name
+  else
+    h2
+      a(href='/login/') anmelden

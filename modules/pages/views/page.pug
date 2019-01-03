@@ -1,8 +1,9 @@
 //- page.pug
 html
   head
-    include ../../page-elements/head.pug
+    include ../../page-elements/views/head.pug
   body
     #page.page
+      include ../../page-elements/views/header.pug
       block content
-      include ../../page-elements/footer.pug
+      include ../../page-elements/views/footer.pug
