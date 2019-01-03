@@ -32,7 +32,7 @@ describe('/login/tests/server/index.js', function () {
           done();
         });
     });
-    it('should have headline', function (done) {
+    it('should have headline and links', function (done) {
       chai.request('http://localhost:8080')
         .get('/login/')
         .end(function (err, res) {
@@ -42,6 +42,8 @@ describe('/login/tests/server/index.js', function () {
           const { document } = (new JSDOM(res.text)).window;
           const headline = document.getElementById('headline');
           assert.equal(headline.textContent, 'Login');
+          const links = document.querySelectorAll('#login-list li a');
+          assert.equal(links.length, 1);
           done();
         });
     });
