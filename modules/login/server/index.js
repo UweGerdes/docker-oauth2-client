@@ -13,9 +13,7 @@ const controller = require('./controller.js');
 // login overview
 router.get('/', controller.index);
 router.get('/callback', controller.callback);
-router.get('/welcome', controller.welcome);
 
 module.exports = {
-  router: router,
-  setExpress: controller.setExpress
+  router: router
 };

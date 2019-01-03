@@ -11,6 +11,7 @@ const bodyParser = require('body-parser'),
   chalk = require('chalk'),
   dateFormat = require('dateformat'),
   express = require('express'),
+  session = require('express-session'),
   glob = require('glob'),
   morgan = require('morgan'),
   path = require('path'),
@@ -48,6 +49,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // work on cookies
 app.use(cookieParser());
 
+app.use(session({
+  secret: 'uif fsranöaiorawrua vrw',
+  resave: false,
+  saveUninitialized: true
+}));
 // Serve static files
 app.use(express.static(config.server.docroot));
 

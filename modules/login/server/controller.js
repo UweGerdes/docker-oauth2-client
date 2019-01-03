@@ -10,7 +10,6 @@ const axios = require('axios'),
   fs = require('fs'),
   yaml = require('js-yaml'),
   path = require('path'),
-  session = require('express-session'),
   config = require('../../../lib/config'),
   model = require('./model.js');
 
@@ -19,8 +18,6 @@ const viewBase = path.join(path.dirname(__dirname), 'views');
 const moduleConfig = yaml.safeLoad(
   fs.readFileSync(path.join(__dirname, '..', 'configuration.yaml'), 'utf8')
 );
-
-let app;
 
 const viewRenderParams = {
   // model data
@@ -43,6 +40,9 @@ const index = (req, res) => {
   getHostData(req),
   viewRenderParams,
   model.getData());
+  if (req.session.userdata) {
+    data.userdata = req.session.userdata;
+  }
   res.render(path.join(viewBase, 'index.pug'), data);
 };
 
@@ -76,7 +76,7 @@ const callback = async (req, res) => {
       }
     });
     req.session.userdata = userdata.data;
-    res.redirect('/login/welcome/');
+    res.redirect('/login/');
   } else {
     req.session.unauthorized = true;
     let data = Object.assign({
@@ -90,49 +90,9 @@ const callback = async (req, res) => {
   }
 };
 
-/**
- * ### welcome page
- *
- * render the welcome page
- *
- * @param {object} req - request
- * @param {object} res - result
- */
-const welcome = (req, res) => {
-  let data = Object.assign({
-    title: 'welcome',
-    userdata: req.session.userdata
-  },
-  req.params,
-  getHostData(req),
-  viewRenderParams,
-  model.getData());
-  if (req.session.userdata) {
-    res.render(path.join(viewBase, 'welcome.pug'), data);
-  } else {
-    res.render(path.join(viewBase, 'index.pug'), data);
-  }
-};
-
-/**
- * ### set express for socket
- *
- * @param {object} express - express instance
- */
-const setExpress = (express) => {
-  app = express;
-  app.use(session({
-    secret: 'uif fsranöaiorawrua vrw',
-    resave: false,
-    saveUninitialized: true
-  }));
-};
-
 module.exports = {
   index: index,
-  callback: callback,
-  welcome: welcome,
-  setExpress: setExpress
+  callback: callback
 };
 
 /**

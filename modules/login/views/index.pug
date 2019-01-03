@@ -12,14 +12,19 @@ block content
         h1#headline.headline.flex-block.flex-left= module.name
 
     #login-container.login-container.flex-block.flex-center
-      h2 Login
-      ul#login-list
-        each oauth, name in module.oauth2
-          li
-            a(href=
-              oauth.authorizationUri + '?' +
-              oauth.clientIDParamName + '=' + oauth.clientID + '&' +
-              oauth.redirectUriParamName + '=' +
-              oauth.redirectUri
-            )
-              = 'Login with ' + name
+      if userdata
+        h2 Welcome
+          = ' ' + userdata.name
+        pre#userdata= '' + JSON.stringify(userdata, null, 4)
+      else
+        h2 Login
+        ul#login-list
+          each oauth, name in module.oauth2
+            li
+              a(href=
+                oauth.authorizationUri + '?' +
+                oauth.clientIDParamName + '=' + oauth.clientID + '&' +
+                oauth.redirectUriParamName + '=' +
+                oauth.redirectUri
+              )
+                = 'Login with ' + name
