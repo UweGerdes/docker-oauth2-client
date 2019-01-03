@@ -162,6 +162,7 @@ function getHostData(req) {
     hostname: req.hostname,
     httpPort: config.server.httpPort,
     livereloadPort: livereloadPort,
-    modules: modules
+    modules: modules,
+    session: req.session
   };
 }
