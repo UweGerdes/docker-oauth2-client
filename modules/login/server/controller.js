@@ -35,7 +35,8 @@ const viewRenderParams = {
  */
 const index = (req, res) => {
   let data = Object.assign({
-    title: 'Login'
+    title: 'Login',
+    session: req.session
   },
   req.params,
   getHostData(req),

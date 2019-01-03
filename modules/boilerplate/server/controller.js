@@ -27,7 +27,8 @@ const viewRenderParams = {
  */
 const index = (req, res) => {
   let data = Object.assign({
-    title: 'boilerplate'
+    title: 'boilerplate',
+    session: req.session
   },
   req.params,
   getHostData(req),

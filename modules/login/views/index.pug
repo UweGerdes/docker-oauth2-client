@@ -12,10 +12,10 @@ block content
         h1#headline.headline.flex-block.flex-left= module.name
 
     #login-container.login-container.flex-block.flex-center
-      if userdata
+      if session.userdata
         h2 Welcome
-          = ' ' + userdata.name
-        pre#userdata= '' + JSON.stringify(userdata, null, 4)
+          = ' ' + session.userdata.name
+        pre#userdata= '' + JSON.stringify(session.userdata, null, 4)
       else
         h2 Login
         ul#login-list
