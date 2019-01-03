@@ -63,7 +63,24 @@ const callback = async (req, res) => {
       }
     });
     const accessToken = response.data.access_token;
-    res.redirect(`${oauth.welcomePath}?access_token=${accessToken}`);
+    console.log('accessToken', accessToken);
+    const userdata = await axios({
+      method: 'get',
+      url: `${oauth.userdataUri}`,
+      headers: {
+        Authorization: 'token ' + accessToken
+      }
+    });
+    console.log('userdata', userdata.data);
+    let data = Object.assign({
+      title: 'welcome',
+      userdata: userdata.data
+    },
+    req.params,
+    getHostData(req),
+    viewRenderParams,
+    model.getData());
+    res.render(path.join(viewBase, 'welcome.pug'), data);
   } else {
     let data = Object.assign({
       title: 'unauthorized'

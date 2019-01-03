@@ -10,3 +10,4 @@ oauth2:
     welcomePath: /login/welcome
     accessTokenUri: https://github.com/login/oauth/access_token
     authorizationUri: https://github.com/login/oauth/authorize
+    userdataUri: https://api.github.com/user
