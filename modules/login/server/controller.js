@@ -35,8 +35,7 @@ const viewRenderParams = {
  */
 const index = (req, res) => {
   let data = Object.assign({
-    title: 'Login',
-    session: req.session
+    title: 'Login'
   },
   req.params,
   getHostData(req),
@@ -122,6 +121,7 @@ function getHostData(req) {
     environment: process.env.NODE_ENV,
     hostname: req.hostname,
     livereloadPort: livereloadPort,
-    module: moduleConfig
+    module: moduleConfig,
+    session: req.session
   };
 }

@@ -8,7 +8,8 @@
 
 const path = require('path'),
   config = require('../../../lib/config'),
-  model = require('./model.js');
+  model = require('./model.js'),
+  moduleConfig = require('../config.json');
 
 const viewBase = path.join(path.dirname(__dirname), 'views');
 
@@ -27,8 +28,7 @@ const viewRenderParams = {
  */
 const index = (req, res) => {
   let data = Object.assign({
-    title: 'boilerplate',
-    session: req.session
+    title: 'boilerplate'
   },
   req.params,
   getHostData(req),
@@ -53,11 +53,11 @@ function getHostData(req) {
   if (host.indexOf(':') > 0) {
     livereloadPort = parseInt(host.split(':')[1], 10) + 1;
   }
-  const module = require(path.join('..', 'config.json'));
   return {
     environment: process.env.NODE_ENV,
     hostname: req.hostname,
     livereloadPort: livereloadPort,
-    module: module
+    module: moduleConfig,
+    session: req.session
   };
 }
