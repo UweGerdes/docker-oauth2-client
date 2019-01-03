@@ -2,7 +2,7 @@
 if session
   #login-status.login-status
     if session.userdata
-      h2= 'Angemeldet über ' + session.oauthProvider + ' als '  + session.userdata.name
+      .login-status-ok= 'Angemeldet über ' + session.oauthProvider + ' als '  + session.userdata.name
     else
-      h2
+      .login-status-login
         a(href='/login/') anmelden

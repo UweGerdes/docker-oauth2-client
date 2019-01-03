@@ -1,28 +1,18 @@
 <!DOCTYPE html>
 <html lang="de">
 	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>Module</title>
-		<meta name="viewport" content="width=device-width">
-		<meta name="author" content="Uwe Gerdes, entwicklung@uwegerdes.de">
-		<meta name="description" content="Webapp">
-		<link rel="stylesheet" href="/css/app.css" />
+<%- include("../../../page-elements/views/head.ejs") %>
 	</head>
 	<body>
 		<div class="page">
+			<div id="header" class="header">
+<%- include("../../../page-elements/views/header.ejs") %>
+			</div>
 			<h1 id="headline" class="headline">Module:</h1>
 			<% for (var [module, data] of Object.entries(modules)) { %>
 				<h2><a href="<%= module %>/"><%= data.name %></a></h2>
 			<% } %>
-			<div id="footer">
-				<p class="copyright" id="copyright">
-					&copy; 2018 <a href="mailto:entwicklung@uwegerdes.de">Uwe Gerdes</a>
-				</p>
-			</div>
+<%- include("../../../page-elements/views/footer.ejs") %>
 		</div>
-		<% if (hostname && livereloadPort) { %>
-			<script src="http://<%= hostname %>:<%= livereloadPort %>/livereload.js" language="JavaScript"></script>
-		<% } %>
 	</body>
 </html>

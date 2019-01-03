@@ -1,0 +1,17 @@
+				<div id="header-content" class="header-content flex-wrapper">
+					<div class="flex-block flex-right">
+						<% if (typeof session != "undefined") { %>
+							<div id="login-status" class="login-status">
+								<% if ((typeof session.userdata != "undefined")) { %>
+									<div class="login-status-ok">
+										Angemeldet über <%= session.oauthProvider %> als <%= session.userdata.name %>
+									</div>
+								<% } else { %>
+									<div class="login-status-login">
+										<a href="/login/">anmelden</a>
+									</div>
+								<% } %>
+							</div>
+						<% } %>
+					</div>
+				</div>
