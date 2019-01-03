@@ -15,8 +15,6 @@ const axios = require('axios'),
 
 const viewBase = path.join(path.dirname(__dirname), 'views');
 
-const runRedirect = false;
-
 const moduleConfig = yaml.safeLoad(
   fs.readFileSync(path.join(__dirname, '..', 'configuration.yaml'), 'utf8')
 );
@@ -53,29 +51,28 @@ const index = (req, res) => {
  * @param {object} req - request
  * @param {object} res - result
  */
-const callback = (req, res) => {
+const callback = async (req, res) => {
   const requestToken = req.query.code;
-  if (runRedirect) {
-    axios({
+  if (requestToken) {
+    const oauth = moduleConfig.oauth2.GitHub;
+    const response = await axios({
       method: 'post',
-      url: `https://github.com/login/oauth/access_token?client_id=${moduleConfig.oauth2.GitHub.clientID}&client_secret=${moduleConfig.oauth2.GitHub.clientSecret}&code=${requestToken}`,
+      url: `${oauth.accessTokenUri}?${oauth.clientIDParamName}=${oauth.clientID}&${oauth.clientSecretParamName}=${oauth.clientSecret}&code=${requestToken}`,
       headers: {
         accept: 'application/json'
       }
-    }).then((response) => {
-      const accessToken = response.data.access_token;
-      console.log(accessToken);
-      res.redirect(`/welcome.html?access_token=${accessToken}`);
     });
+    const accessToken = response.data.access_token;
+    res.redirect(`${oauth.welcomePath}?access_token=${accessToken}`);
   } else {
     let data = Object.assign({
-      title: 'callback'
+      title: 'unauthorized'
     },
     req.params,
     getHostData(req),
     viewRenderParams,
     model.getData());
-    res.render(path.join(viewBase, 'callback.pug'), data);
+    res.status(401).render(path.join(viewBase, 'unauthorized.pug'), data);
   }
 };
 

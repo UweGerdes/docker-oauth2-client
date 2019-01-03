@@ -13,3 +13,25 @@ block content
 
     #login-container.login-container.flex-block.flex-center
       h2 Welcome
+      #userdata
+
+  script.
+    const query = window.location.search.substring(1)
+    const token = query.split('access_token=')[1]
+
+    // Call the user info API using the fetch browser library
+    fetch('//api.github.com/user', {
+        headers: {
+          // Include the token in the Authorization header
+          Authorization: 'token ' + token
+        }
+      })
+      // Parse the response as JSON
+      .then(res => res.json())
+      .then(res => {
+        // Once we get the response (which has many fields)
+        // Documented here: https://developer.github.com/v3/users/#get-the-authenticated-user
+        // Write "Welcome <user name>" to the documents body
+        const nameNode = document.createTextNode(`Welcome, ${res.name}`)
+        document.getElementById('userdata').appendChild(nameNode)
+      })

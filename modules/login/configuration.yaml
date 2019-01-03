@@ -7,5 +7,6 @@ oauth2:
     clientSecretParamName: client_secret
     redirectUri: http://localhost:8080/login/callback
     redirectUriParamName: redirect_uri
+    welcomePath: /login/welcome
     accessTokenUri: https://github.com/login/oauth/access_token
     authorizationUri: https://github.com/login/oauth/authorize
