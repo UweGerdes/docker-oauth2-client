@@ -10,6 +10,7 @@ const axios = require('axios'),
   fs = require('fs'),
   yaml = require('js-yaml'),
   path = require('path'),
+  session = require('express-session'),
   config = require('../../../lib/config'),
   model = require('./model.js');
 
@@ -18,6 +19,8 @@ const viewBase = path.join(path.dirname(__dirname), 'views');
 const moduleConfig = yaml.safeLoad(
   fs.readFileSync(path.join(__dirname, '..', 'configuration.yaml'), 'utf8')
 );
+
+let app;
 
 const viewRenderParams = {
   // model data
@@ -55,6 +58,7 @@ const callback = async (req, res) => {
   const requestToken = req.query.code;
   if (requestToken) {
     const oauth = moduleConfig.oauth2.GitHub;
+    req.session.oauthProvider = 'GitHub';
     const response = await axios({
       method: 'post',
       url: `${oauth.accessTokenUri}?${oauth.clientIDParamName}=${oauth.clientID}&${oauth.clientSecretParamName}=${oauth.clientSecret}&code=${requestToken}`,
@@ -63,7 +67,7 @@ const callback = async (req, res) => {
       }
     });
     const accessToken = response.data.access_token;
-    console.log('accessToken', accessToken);
+    req.session.accessToken = accessToken;
     const userdata = await axios({
       method: 'get',
       url: `${oauth.userdataUri}`,
@@ -71,17 +75,10 @@ const callback = async (req, res) => {
         Authorization: 'token ' + accessToken
       }
     });
-    console.log('userdata', userdata.data);
-    let data = Object.assign({
-      title: 'welcome',
-      userdata: userdata.data
-    },
-    req.params,
-    getHostData(req),
-    viewRenderParams,
-    model.getData());
-    res.render(path.join(viewBase, 'welcome.pug'), data);
+    req.session.userdata = userdata.data;
+    res.redirect('/login/welcome/');
   } else {
+    req.session.unauthorized = true;
     let data = Object.assign({
       title: 'unauthorized'
     },
@@ -103,19 +100,39 @@ const callback = async (req, res) => {
  */
 const welcome = (req, res) => {
   let data = Object.assign({
-    title: 'welcome'
+    title: 'welcome',
+    userdata: req.session.userdata
   },
   req.params,
   getHostData(req),
   viewRenderParams,
   model.getData());
-  res.render(path.join(viewBase, 'welcome.pug'), data);
+  if (req.session.userdata) {
+    res.render(path.join(viewBase, 'welcome.pug'), data);
+  } else {
+    res.render(path.join(viewBase, 'index.pug'), data);
+  }
+};
+
+/**
+ * ### set express for socket
+ *
+ * @param {object} express - express instance
+ */
+const setExpress = (express) => {
+  app = express;
+  app.use(session({
+    secret: 'uif fsranöaiorawrua vrw',
+    resave: false,
+    saveUninitialized: true
+  }));
 };
 
 module.exports = {
   index: index,
   callback: callback,
-  welcome: welcome
+  welcome: welcome,
+  setExpress: setExpress
 };
 
 /**
