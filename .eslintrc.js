@@ -2,6 +2,13 @@ module.exports = {
   extends: [
     'airbnb/legacy'
   ],
+  "parserOptions": {
+    "ecmaVersion": 8,
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "sourceType": "module"
+  },
   rules: {
     camelcase: 0,
     'comma-dangle': [2, 'never'],
