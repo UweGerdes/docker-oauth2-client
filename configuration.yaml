@@ -68,6 +68,7 @@ gulp:
       - './modules/*/*.yaml'
     livereload:
       - 'public/**/*.html'
+      - 'modules/**/*.ejs'
       - 'modules/**/*.pug'
       - 'public/img/**/*.*'
       - 'public/css/*.css'
