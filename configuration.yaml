@@ -70,9 +70,9 @@ gulp:
     puglint:
       - '**/*.pug'
     server:
-      - './server.js'
-      - './modules/*/server/*.js'
-      - './modules/*/*.yaml'
+      - 'server.js'
+      - 'modules/*/server/*.js'
+      - 'modules/*/*.yaml'
     livereload:
       - 'public/**/*.html'
       - 'modules/**/*.ejs'
