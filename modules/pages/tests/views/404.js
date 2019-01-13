@@ -30,7 +30,7 @@ describe('/pages/tests/server/404.js', function () {
           done();
         });
     });
-    it('should have head and error message - en', function (done) {
+    it('should have head and error message - de', function (done) {
       chai.request('http://localhost:8080')
         .get('/nonexistant/')
         .set('Accept-Language', 'de;q=0.8,en;q=0.5')
