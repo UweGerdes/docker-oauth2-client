@@ -46,3 +46,5 @@ $ docker start -ai expressjs-boilerplate
 You should add your project in the modules subdirectory with html/ejs/pug templates, less, js, server and tests. See the sample in modules/boilerplate.
 
 Other samples are in my projects docker-vcards, docker-rpi-nodejs-gpio (more to come).
+
+`server.js` will load `module/[project]/server/index.js` - this should be your router. Routes are prepended with `[project]`.

@@ -12,6 +12,7 @@ const bodyParser = require('body-parser'),
   dateFormat = require('dateformat'),
   express = require('express'),
   glob = require('glob'),
+  i18n = require('i18n'),
   morgan = require('morgan'),
   path = require('path'),
   config = require('./lib/config'),
@@ -36,6 +37,9 @@ if (config.server.verbose) {
     ':method :status :url :res[content-length] Bytes - :response-time ms'));
 }
 
+// Serve static files
+app.use(express.static(config.server.docroot));
+
 /**
  * load modules and set express (perhaps module will use
  */
@@ -58,6 +62,28 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // work on cookies
 app.use(cookieParser());
+
+// set up i18n
+i18n.configure({
+  defaultLocale: 'de',
+  directory: config.gulp.build.locales.dest,
+  autoReload: true,
+  updateFiles: false,
+  cookie: 'lang',
+  queryParameter: 'lang'
+});
+app.use(i18n.init);
+app.use((req, res, next) => {
+  if (req.query.lang) {
+    res.cookie('lang', req.query.lang, { maxAge: 900000, httpOnly: true });
+  } else if (!res.cookie.lang) {
+    const lang = req.acceptsLanguages(...Object.keys(i18n.getCatalog()));
+    if (lang) {
+      i18n.setLocale(lang);
+    }
+  }
+  next();
+});
 
 /**
  * use express in modules (e.g. use session in module login)
@@ -92,10 +118,9 @@ app.get('/app', (req, res) => {
 });
 
 // Fire it up!
-log.info('server listening on ' +
-  chalk.greenBright('http://' + ipv4addresses.get()[0] + ':' + config.server.httpPort));
-
 server.listen(config.server.httpPort);
+server.on('error', onError);
+server.on('listening', onListening);
 
 /**
  * connect server and use routes from modules
@@ -165,4 +190,34 @@ function getHostData(req) {
     modules: modules,
     session: req.session
   };
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(config.server.httpPort + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(config.server.httpPort + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+function onListening() {
+  log.info('server listening on ' +
+    chalk.greenBright('http://' + ipv4addresses.get()[0] + ':' + config.server.httpPort));
 }

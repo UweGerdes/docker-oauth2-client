@@ -9,7 +9,7 @@ const fs = require('fs'),
   glob = require('glob');
 
 // execute only one test file if one has changed in recentTime, otherwise all
-const recentTime = 60; // * 60;
+const recentTime = 10;
 
 /**
  * get list of files for glob pattern

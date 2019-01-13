@@ -14,6 +14,7 @@ gulp:
       build:
         - 'less'
         - 'js'
+        - 'locales'
 #        - 'jsdoc'
       tests:
         - 'test-modules'
@@ -34,6 +35,7 @@ gulp:
       build:
         - 'less'
         - 'js'
+        - 'locales'
       tests: []
       lint: []
       server:
@@ -52,6 +54,11 @@ gulp:
     jsonlint:
       - '**/*.json'
       - '.lesshintrc'
+      - '!src/locales/*.json'
+      - '!modules/**/locales/*.json'
+    locales:
+      - 'src/locales/*.json'
+      - 'modules/**/locales/*.json'
     yamllint:
       - '**/*.yaml'
       - '**/*.yml'
@@ -103,6 +110,8 @@ gulp:
     less:
       src: 'src/less/app.less'
       dest: 'public/css'
+    locales:
+      dest: 'locales'
 
 server:
   server: ./server.js

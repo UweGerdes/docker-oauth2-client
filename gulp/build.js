@@ -8,6 +8,7 @@ const gulp = require('gulp'),
   autoprefixer = require('gulp-autoprefixer'),
   jsdoc = require('gulp-jsdoc3'),
   less = require('gulp-less'),
+  mergeTranslations = require('gulp-merge-translations'),
   rename = require('gulp-rename'),
   sequence = require('gulp-sequence'),
   gulpStreamToPromise = require('gulp-stream-to-promise'),
@@ -84,6 +85,23 @@ const tasks = {
         callback();
       })
       .catch(err => console.log(err));
+  }],
+  /**
+   * #### Compile locales files
+   *
+   * compile locales files
+   *
+   * @task locales
+   * @namespace tasks
+   */
+  'locales': [['localesjsonlint'], () => {
+    return gulp.src(config.gulp.watch.locales)
+      .pipe(mergeTranslations('', {
+        sep: '',
+        jsonSpace: '  '
+      }))
+      .pipe(gulp.dest(config.gulp.build.locales.dest))
+      .pipe(notify({ message: 'written: <%= file.path %>', title: 'Gulp locales' }));
   }],
   /**
    * #### Compile jsdoc
