@@ -139,7 +139,12 @@ for (const [baseRoute, router] of Object.entries(routers)) {
  * @param {Object} res - response
  */
 app.get('*', (req, res) => {
-  res.status(404).render(viewPath('404'), getHostData(req));
+  res.status(404).render(viewPath('error'), Object.assign({
+    error: {
+      code: 404,
+      name: 'not found'
+    }
+  }, getHostData(req)));
 });
 
 /**
@@ -154,7 +159,13 @@ app.use((err, req, res, next) => {
   console.error('SERVER ERROR:', err);
   if (err) {
     res.status(500)
-      .render(viewPath('500'), Object.assign({ error: err }, getHostData(req)));
+      .render(viewPath('error'), Object.assign({
+        error: {
+          code: 500,
+          name: 'server error',
+          error: err
+        }
+      }, getHostData(req)));
   } else {
     next();
   }
@@ -167,8 +178,8 @@ app.use((err, req, res, next) => {
  * @param {String} page - page type
  * @param {String} type - file type (ejs, jade, pug, html)
  */
-function viewPath(page = '404', type = 'ejs') {
-  return config.server.modules + '/pages/' + page + '/views/index.' + type;
+function viewPath(page = 'error', type = 'ejs') {
+  return config.server.modules + '/pages/views/' + page + '.' + type;
 }
 
 /**
