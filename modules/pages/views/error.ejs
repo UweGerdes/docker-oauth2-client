@@ -17,10 +17,12 @@
 				<% if (locals.error.error) { %>
 					<% if (locals.error.error.msg) { %>
 						<p><%= error.error.msg %></p>
-					<% } %>
-					<% if (locals.error.error.filename) { %>
-						<p><%= error.error.filename %><% if (locals.error.error.line) { %>:<%= error.error.line %><% } %><% if (locals.error.error.column) { %>:<%= error.error.column %><% } %>
-						</p>
+						<% if (locals.error.error.filename) { %>
+							<p><%= error.error.filename %><% if (locals.error.error.line) { %>:<%= error.error.line %><% } %><% if (locals.error.error.column) { %>:<%= error.error.column %><% } %>
+							</p>
+						<% } %>
+					<% } else { %>
+						<pre><%= error.error.toString() %></pre>
 					<% } %>
 				<% } %>
 			<% } else { %>

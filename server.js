@@ -156,7 +156,7 @@ app.get('*', (req, res) => {
  * @param {Object} next - needed for complete signature
  */
 app.use((err, req, res, next) => {
-  console.error('SERVER ERROR:', err);
+  console.error('SERVER ERROR:', err.toString());
   if (err) {
     res.status(500)
       .render(viewPath('error'), Object.assign({
