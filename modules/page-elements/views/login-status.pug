@@ -1,8 +1,8 @@
 //- login-status.pug
 if session
   #login-status.login-status
-    if session.userdata
-      .login-status-ok= 'Angemeldet über ' + session.oauthProvider + ' als '  + session.userdata.name
-    else
-      .login-status-login
-        a(href='/login/') anmelden
+    block loginStatus
+      if session.userdata
+        .login-status-ok= 'Angemeldet über ' + session.oauthProvider + ' als '  + session.userdata.username
+      else
+        a.login-status-login(href='/login/') anmelden

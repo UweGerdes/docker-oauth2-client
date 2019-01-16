@@ -1,0 +1,12 @@
+//- widgets/defaults.pug
+
+append head
+  script(src='/js/boilerplate/script.js')
+
+append breadcrumbs
+  li.header-breadcrumb
+    a.header-breadcrumb-link(href='/boilerplate/')= module.name
+
+append loginStatus
+  if session.userdata
+    a.login-status-logout.logout(href='/boilerplate/logout/') Abmelden

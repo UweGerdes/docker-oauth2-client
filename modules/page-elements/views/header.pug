@@ -2,5 +2,10 @@
 block header
   #header.header
     #header-content.header-content.flex-wrapper
+      .flex-block.flex-left
+        ul.header-breadcrumbs
+          block breadcrumbs
+            li.header-breadcrumb
+              a.header-breadcrumb-link(href='/app/') Home
       .flex-block.flex-right
         include login-status.pug

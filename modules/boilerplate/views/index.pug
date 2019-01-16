@@ -1,15 +1,16 @@
 //- index.pug
 extends ../../pages/views/page.pug
 
-append head
-  script(src='/js/boilerplate/script.js')
+include widgets/defaults.pug
+
+block title
+  | boilerplate
 
 block content
   div#boilerplate.boilerplate.flex-wrapper
 
-    #head.flex-block.flex-header
-      #header-wrapper.flex-wrapper
-        h1#headline.headline.flex-block.flex-left= module.name
+    include widgets/header.pug
 
     #boilerplate-container.boilerplate-container.flex-block.flex-center
       h2.boilerplate-headline #{__('Hello')}
+      a.form-link Formular
