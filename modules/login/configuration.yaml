@@ -1,8 +1,8 @@
 name: Login
 oauth2:
   GitHub:
-    clientID: your-client-id
-    clientSecret: your-client-secret
+    clientID: 155d793cd71173b6ca6a
+    clientSecret: f5dda2ef42f7e0b4ec25f648a4f0e0ccb77e7b38
     clientIDParamName: client_id
     clientSecretParamName: client_secret
     redirectUri: http://localhost:8080/login/callback

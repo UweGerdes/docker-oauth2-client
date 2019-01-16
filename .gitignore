@@ -1,5 +1,5 @@
 #
-public/css
-public/js
-docs/jsdoc
-
+/public/css
+/public/js
+/docs/jsdoc
+/locales

@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="de">
 	<head>
-<%- include("../../../page-elements/views/head.ejs") %>
+<%- include("../../page-elements/views/head.ejs") %>
 	</head>
 	<body>
 		<div class="page">
 			<div id="header" class="header">
-<%- include("../../../page-elements/views/header.ejs") %>
+<%- include("../../page-elements/views/header.ejs") %>
 			</div>
 			<h1 id="headline" class="headline">Module:</h1>
 			<% for (var [module, data] of Object.entries(modules)) { %>
 				<h2><a href="<%= module %>/"><%= data.name %></a></h2>
 			<% } %>
-<%- include("../../../page-elements/views/footer.ejs") %>
+<%- include("../../page-elements/views/footer.ejs") %>
 		</div>
 	</body>
 </html>

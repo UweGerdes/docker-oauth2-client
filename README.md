@@ -1,4 +1,4 @@
-# Docker with Express.js boilerplate
+# Docker with Express.js OAuth2 Client
 
 ### Install Docker
 
@@ -16,7 +16,7 @@ sudo adduser [yourusername] docker
 If you have proxy caches for apt-get and npm you should build my baseimage (or baseimage-arm32v7 for Raspberry Pi 3) and nodejs before building the image.
 
 ```bash
-$ docker build -t uwegerdes/expressjs-boilerplate .
+$ docker build -t uwegerdes/oauth2-client .
 ```
 
 ## Run the Docker container
@@ -24,12 +24,12 @@ $ docker build -t uwegerdes/expressjs-boilerplate .
 Run the container with:
 
 ```bash
-$ docker run -it \
+$ docker run -it --rm \
 	-v $(pwd):/home/node/app \
 	-p 8080:8080 \
 	-p 8081:8081 \
-	--name expressjs-boilerplate \
-	uwegerdes/expressjs-boilerplate \
+	--name oauth2-client \
+	uwegerdes/oauth2-client \
 	bash
 ```
 
@@ -38,11 +38,9 @@ You should start `npm start` or `npm run dev` and open localhost:8080 for the se
 Restart it later with:
 
 ```bash
-$ docker start -ai expressjs-boilerplate
+$ docker start -ai oauth2-client
 ```
 
-## Using the boilerplate
+## Using oauth2-client
 
-You should add your project in the modules subdirectory with html/ejs/pug templates, less, js, server and tests. See the sample in modules/boilerplate.
-
-Other samples are in my projects docker-vcards, docker-rpi-nodejs-gpio (more to come).
+Open `http://localhost:8080/login/` in your preferred browser.
