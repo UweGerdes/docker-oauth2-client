@@ -1,0 +1,28 @@
+//- index.pug
+extends ../../pages/views/page.pug
+
+include ../../page-elements/views/form/input.pug
+include ../../page-elements/views/form/submit.pug
+
+include widgets/defaults.pug
+
+block title
+  | Formular
+
+append breadcrumbs
+  li.header-breadcrumb
+    .header-breadcrumb-label Formular
+
+block content
+  div#user.user.flex-wrapper
+
+    include widgets/header.pug
+
+    #user-container.user-container.flex-block.flex-center
+      h2 Formular
+      if (error)
+        .error #{__(error, post.username)}
+      form#loginform.loginform(method='POST', action='/oauth2/login/')
+        + input('text', 'username', post.username, 30, 'Username')
+        + input('password', 'password', null, 30, 'Passwort')
+        + submit('anmelden')

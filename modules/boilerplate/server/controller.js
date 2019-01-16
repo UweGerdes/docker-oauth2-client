@@ -27,37 +27,50 @@ const viewRenderParams = {
  * @param {object} res - result
  */
 const index = (req, res) => {
-  let data = Object.assign({
-    title: 'boilerplate'
-  },
-  req.params,
-  getHostData(req),
-  viewRenderParams,
-  model.getData());
+  let data = getServerData(req);
   res.render(path.join(viewBase, 'index.pug'), data);
 };
 
+/**
+ * ### form page
+ *
+ * render the form page
+ *
+ * @param {object} req - request
+ * @param {object} res - result
+ */
+const form = (req, res) => {
+  let data = getServerData(req);
+  res.render(path.join(viewBase, 'form.pug'), data);
+};
+
 module.exports = {
-  index: index
+  index: index,
+  form: form
 };
 
 /**
- * Get the host data for livereload
+ * Get the basic data for the response
  *
  * @private
  * @param {String} req - request
  */
-function getHostData(req) {
+function getServerData(req) {
   let livereloadPort = config.server.livereloadPort || process.env.LIVERELOAD_PORT;
   const host = req.get('Host');
   if (host.indexOf(':') > 0) {
     livereloadPort = parseInt(host.split(':')[1], 10) + 1;
   }
-  return {
+  return Object.assign({
     environment: process.env.NODE_ENV,
     hostname: req.hostname,
     livereloadPort: livereloadPort,
     module: moduleConfig,
-    session: req.session
-  };
+    session: req.session,
+    data: false,
+    model: model.getData(),
+    post: { }
+  },
+  req.params,
+  viewRenderParams);
 }

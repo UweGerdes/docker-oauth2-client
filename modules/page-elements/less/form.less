@@ -1,0 +1,27 @@
+// form.less
+
+.field {
+  background-color: #f0f0f0;
+  margin: 0 0 0.4em;
+  padding: 1em;
+
+  &-label {
+    display: block;
+    margin: 0 0 0.5em;
+
+    &-empty {
+      margin: 0;
+    }
+  }
+
+  &-value {
+    .input-text,
+    .input-email,
+    .input-password {
+      border: 1px solid #666666;
+      border-radius: 5px;
+      padding: 4px 6px;
+      width: 100%;
+    }
+  }
+}

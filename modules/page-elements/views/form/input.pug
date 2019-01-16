@@ -1,0 +1,12 @@
+//- widgets/input.pug
+mixin input(type, name, value, size, label)
+  .field(class='field_' + name)
+    label.field-label= label
+    .field-value
+      input(
+        type=type,
+        name=name,
+        value=value,
+        class='input-' + type,
+        size=size
+      )

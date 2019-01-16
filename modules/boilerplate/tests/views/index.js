@@ -13,7 +13,7 @@ const chai = require('chai'),
 
 chai.use(chaiHttp);
 
-describe('/boilerplate/tests/server/index.js', function () {
+describe('/boilerplate/tests/views/index.js', function () {
   describe('GET /boilerplate/', function () {
     it('should have head and script', function (done) {
       chai.request('http://localhost:8080')
