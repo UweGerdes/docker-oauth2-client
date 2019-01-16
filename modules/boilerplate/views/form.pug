@@ -22,7 +22,7 @@ block content
       h2 Formular
       if (error)
         .error #{__(error, post.username)}
-      form#loginform.loginform(method='POST', action='/oauth2/login/')
+      form#loginform.loginform(method='POST', action='/boilerplate/form/')
         + input('text', 'username', post.username, 30, 'Username')
         + input('password', 'password', null, 30, 'Passwort')
         + submit('anmelden')

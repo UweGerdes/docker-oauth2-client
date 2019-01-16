@@ -41,7 +41,21 @@ const index = (req, res) => {
  */
 const form = (req, res) => {
   let data = getServerData(req);
-  res.render(path.join(viewBase, 'form.pug'), data);
+  let statusCode = 200;
+  if (req.method === 'POST' && req.body) {
+    try {
+      data.post = { username: req.body.username };
+      // the following command should throw if user unknown
+      data.user = { username: req.body.username };
+      data.user.name = req.body.username;
+      req.session.oauthProvider = moduleConfig.name;
+      req.session.userdata = data.user;
+    } catch (error) {
+      data.error = error.message;
+      statusCode = 302;
+    }
+  }
+  res.status(statusCode).render(path.join(viewBase, 'form.pug'), data);
 };
 
 module.exports = {
