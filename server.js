@@ -117,6 +117,16 @@ app.get('/app', (req, res) => {
   res.render(viewPath('app'), getHostData(req));
 });
 
+/**
+ * Route for i18n ejs test page
+ *
+ * @param {Object} req - request
+ * @param {Object} res - response
+ */
+app.get('/i18n-ejs', (req, res) => {
+  res.render(viewPath('i18n-test'), getHostData(req));
+});
+
 // Fire it up!
 server.listen(config.server.httpPort);
 server.on('error', onError);
