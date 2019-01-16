@@ -1,5 +1,5 @@
 #
-#  Configuration for boilerplate
+#  Configuration for oauth2-client
 #
 gulp:
   start:

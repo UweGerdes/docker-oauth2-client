@@ -1,5 +1,5 @@
 /**
- * ## HTTP-Server for boilerplate
+ * ## HTTP-Server for oauth2-client
  *
  * @module server
  */

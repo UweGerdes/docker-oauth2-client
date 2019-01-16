@@ -73,7 +73,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/uwegerdes/docker-expressjs-boilerplate"
+    "url": "https://github.com/uwegerdes/docker-oauth2-client"
   },
   "scripts": {
     "start": "gulp",

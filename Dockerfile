@@ -1,4 +1,4 @@
-# Dockerfile for expressjs boilerplate
+# Dockerfile for expressjs oauth2-client
 
 ARG NODEIMAGE_VERSION=latest
 FROM uwegerdes/nodejs:${NODEIMAGE_VERSION}
