@@ -41,6 +41,10 @@ Restart it later with:
 $ docker start -ai oauth2-client
 ```
 
+## Configuring Client
+
+At the moment only an authorization at github is implemented. See `/modules/login` for implementation.
+
 ## Using oauth2-client
 
 Open `http://localhost:8080/login/` in your preferred browser.
