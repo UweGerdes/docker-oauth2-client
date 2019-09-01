@@ -14,6 +14,7 @@ ENV LIVERELOAD_PORT ${LIVERELOAD_PORT}
 USER root
 
 COPY package.json ${NODE_HOME}/
+COPY . ${APP_HOME}
 
 RUN apt-get update && \
 	apt-get dist-upgrade -y && \
@@ -28,10 +29,6 @@ RUN apt-get update && \
 COPY entrypoint.sh /usr/local/bin/
 RUN chmod 755 /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-
-COPY . ${APP_HOME}
-
-RUN chown -R ${USER_NAME}:${USER_NAME} ${APP_HOME}
 
 USER ${USER_NAME}
 
